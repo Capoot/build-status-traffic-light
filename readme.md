@@ -1,6 +1,10 @@
 # Build Status Traffic Light
 
-This project contains bash scripts for connecting Jenkins jobs with the Build Status Traffic Light.
+This project contains bash scripts for connecting Jenkins jobs with the Build Status Traffic Light. Additional 
+information about installing the Clewarecontrol drivers and workarounds for known problems can be found here (request
+ read access if you can't open the doc):
+
+https://docs.google.com/document/d/1UCllGJj2ZUeLe1vxnVTs1pRWzoleir_1C9he31zUW6c/view
 
 ## Configuration
 
