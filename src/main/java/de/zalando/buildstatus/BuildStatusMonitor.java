@@ -19,20 +19,25 @@ public class BuildStatusMonitor {
         for (Job job : jobs) {
             JobStatus status = job.queryStatus();
             setDisplayStatus(status);
-            if (displayStatus == JobStatus.FAILED) {
-                break;
-            }
         }
         switch(displayStatus) {
             case FAILED:
-                indicator.displayFailure();
+                indicator.displayFailure(false);
                 break;
             case SUCCESS:
-                indicator.displaySuccess();
+                indicator.displaySuccess(false);
                 break;
             case UNSTABLE:
-                indicator.displayUnstable();
+                indicator.displayUnstable(false);
                 break;
+            case FAILED_ANIMATION:
+                indicator.displayFailure(true);
+                break;
+            case UNSTABLE_ANIMATION:
+                indicator.displayUnstable(true);
+                break;
+            case SUCCESS_ANIMATION:
+                indicator.displaySuccess(true);
         }
     }
 
@@ -41,12 +46,20 @@ public class BuildStatusMonitor {
     }
 
     public void setDisplayStatus(JobStatus displayStatus) {
-        if(this.displayStatus == JobStatus.FAILED) {
+        if(currentStatusIsFailed() && displayStatus != JobStatus.FAILED_ANIMATION) {
             return;
         }
-        if(this.displayStatus == JobStatus.UNSTABLE && displayStatus == JobStatus.SUCCESS) {
+        if(currentStatusIsUnstable() && displayStatus == JobStatus.SUCCESS) {
             return;
         }
         this.displayStatus = displayStatus;
+    }
+
+    private boolean currentStatusIsFailed() {
+        return this.displayStatus == JobStatus.FAILED || this.displayStatus == JobStatus.FAILED_ANIMATION;
+    }
+
+    private boolean currentStatusIsUnstable() {
+        return this.displayStatus == JobStatus.UNSTABLE || this.displayStatus == JobStatus.UNSTABLE_ANIMATION;
     }
 }
