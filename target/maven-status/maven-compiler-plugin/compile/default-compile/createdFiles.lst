@@ -1,0 +1,8 @@
+de/zalando/buildstatus/JenkinsJob.class
+de/zalando/buildstatus/BuildStatusMonitor.class
+de/zalando/buildstatus/JobStatus.class
+de/zalando/buildstatus/TrafficLight.class
+de/zalando/buildstatus/Main.class
+de/zalando/buildstatus/BuildStatusIndicator.class
+de/zalando/buildstatus/BuildStatusMonitor$1.class
+de/zalando/buildstatus/Job.class

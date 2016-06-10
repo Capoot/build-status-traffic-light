@@ -38,4 +38,3 @@ case $2 in
 esac
 
 clewarecontrol -c 1 -d -1 -as $COLOR $STATUS > /dev/null 2>&1
-
