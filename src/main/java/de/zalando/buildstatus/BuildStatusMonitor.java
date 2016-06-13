@@ -14,6 +14,10 @@ public class BuildStatusMonitor {
     }
 
     public void update() {
+        update(jobs);
+    }
+
+    public void update(Collection<Job> jobs) {
 
         clearDisplayStatus();
         for (Job job : jobs) {
@@ -61,5 +65,12 @@ public class BuildStatusMonitor {
 
     private boolean currentStatusIsUnstable() {
         return this.displayStatus == JobStatus.UNSTABLE || this.displayStatus == JobStatus.UNSTABLE_ANIMATION;
+    }
+
+    public void addJob(Job job) {
+        if(jobs.contains(job)) {
+            throw new IllegalStateException("duplicate job");
+        }
+        jobs.add(job);
     }
 }

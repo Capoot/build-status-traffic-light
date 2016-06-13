@@ -9,14 +9,16 @@ import java.io.IOException;
 
 public class JenkinsJob implements Job {
 
-    private final String serverUrl;
-    private final String jobName;
     private final String authHeader;
+    private final String url;
 
-    public JenkinsJob(String serverUrl, String jobName, String user, String password) {
+    public JenkinsJob(String host, String jobName, String user, String password) {
 
-        this.serverUrl = serverUrl;
-        this.jobName = jobName;
+        if(!host.endsWith("/")) {
+            host = host + "/";
+        }
+
+        url = host + jobName + "/api/json";
 
         String basicAuthString = user + ":" + password;
         this.authHeader = Base64.encodeBase64String(basicAuthString.getBytes());
@@ -24,7 +26,6 @@ public class JenkinsJob implements Job {
 
     @Override
     public JobStatus queryStatus() {
-        final String url = serverUrl + "/" + jobName + "/api/json";
         String jsonString = requestJobFromJsonApi(url);
         JSONObject json = new JSONObject(jsonString);
         String color = json.get("color").toString().toLowerCase();
@@ -53,5 +54,9 @@ public class JenkinsJob implements Job {
 
     private boolean isSecured() {
         return authHeader != null;
+    }
+
+    String getUrl() {
+        return url;
     }
 }
