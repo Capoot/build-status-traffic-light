@@ -1,6 +1,7 @@
 package de.zalando.buildstatus;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -29,6 +30,11 @@ public class RemoveJobTest {
 
         JobService cli = new JobService(jobsFolder.getRoot().getAbsolutePath(), buildStatusMonitor);
         cli.removeJob(JOB_NAME);
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        jobsFolder.delete();
     }
 
     @Test

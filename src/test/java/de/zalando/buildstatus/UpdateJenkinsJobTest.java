@@ -2,6 +2,7 @@ package de.zalando.buildstatus;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -41,6 +42,11 @@ public class UpdateJenkinsJobTest {
         JobService cli = new JobService(jobsFolder.getRoot().getAbsolutePath(), buildStatusMonitor);
         cli.updateJenkinsJob(HOST, JOB_NAME, USER, PASSWORD);
         jobJson = new JSONObject(IOUtils.toString(new FileInputStream(jobFileName)));
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        jobsFolder.delete();
     }
 
     @Test

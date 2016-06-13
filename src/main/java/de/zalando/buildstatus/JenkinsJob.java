@@ -42,11 +42,6 @@ public class JenkinsJob implements Job {
         throw new IllegalStateException("Failed to retrieve job status from jenkins url = [" + url + "]");
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
     private String requestJobFromJsonApi(String url) {
         try {
             Request request = Request.Get(url);
@@ -61,6 +56,16 @@ public class JenkinsJob implements Job {
 
     private boolean isSecured() {
         return authHeader != null;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String getDetails() {
+        return name + "\t(jenkins)\t" + url;
     }
 
     String getUrl() {
