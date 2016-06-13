@@ -5,12 +5,12 @@ import java.io.IOException;
 
 import static java.util.Collections.singletonList;
 
-public class CommandLineInterface {
+public class JobService {
 
     private final File jobsDirectory;
     private final BuildStatusMonitor buildStatusMonitor;
 
-    public CommandLineInterface(String jobsDirectory, BuildStatusMonitor buildStatusMonitor) {
+    public JobService(String jobsDirectory, BuildStatusMonitor buildStatusMonitor) {
         this.buildStatusMonitor = buildStatusMonitor;
         this.jobsDirectory = new File(jobsDirectory);
     }
@@ -30,5 +30,15 @@ public class CommandLineInterface {
 
     public void removeJob(String jobName) throws IOException {
         JobsIO.deleteJobFile(jobsDirectory, jobName);
+        buildStatusMonitor.removeJob(jobName);
+    }
+
+    public void updateJenkinsJob(String host, String jobName, String user, String password) throws IOException {
+        JobsIO.deleteJobFile(jobsDirectory, jobName);
+        JobsIO.writeJenkinsJobToFile(host, jobName, user, password, jobsDirectory);
+        buildStatusMonitor.removeJob(jobName);
+        JenkinsJob job = new JenkinsJob(host, jobName, user, password);
+        buildStatusMonitor.addJob(job);
+        buildStatusMonitor.update(singletonList(job));
     }
 }

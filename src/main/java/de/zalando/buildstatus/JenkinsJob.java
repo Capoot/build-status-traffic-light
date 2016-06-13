@@ -11,6 +11,7 @@ public class JenkinsJob implements Job {
 
     private final String authHeader;
     private final String url;
+    private final String name;
 
     public JenkinsJob(String host, String jobName, String user, String password) {
 
@@ -19,6 +20,7 @@ public class JenkinsJob implements Job {
         }
 
         url = host + jobName + "/api/json";
+        name = jobName;
 
         String basicAuthString = user + ":" + password;
         this.authHeader = Base64.encodeBase64String(basicAuthString.getBytes());
@@ -38,6 +40,11 @@ public class JenkinsJob implements Job {
             case "blue_anime" : return JobStatus.SUCCESS_ANIMATION;
         }
         throw new IllegalStateException("Failed to retrieve job status from jenkins url = [" + url + "]");
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     private String requestJobFromJsonApi(String url) {

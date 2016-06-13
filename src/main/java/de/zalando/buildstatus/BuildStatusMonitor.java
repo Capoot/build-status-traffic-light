@@ -73,4 +73,21 @@ public class BuildStatusMonitor {
         }
         jobs.add(job);
     }
+
+    public void removeJob(String jobName) {
+
+        Job job = null;
+        for(Job j : jobs) {
+            if(j.getName().equals(jobName)) {
+                job = j;
+                break;
+            }
+        }
+
+        if(job == null) {
+            throw new IllegalStateException("no such job: [" + jobName + "]");
+        }
+
+        jobs.remove(job);
+    }
 }

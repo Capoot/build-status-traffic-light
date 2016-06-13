@@ -11,6 +11,10 @@ public class JobsIO {
     public static void writeJenkinsJobToFile(String host, String jobName, String userName, String password, File dest)
             throws IOException {
 
+        if(!host.endsWith("/")) {
+            host = host + "/";
+        }
+
         JSONObject json = new JSONObject();
         json.put("url", host + jobName + "/api/json");
         json.put("userName", userName);

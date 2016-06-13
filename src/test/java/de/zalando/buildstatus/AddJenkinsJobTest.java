@@ -17,7 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class CliAddJenkinsJobTest {
+public class AddJenkinsJobTest {
 
     private static final int PORT = 8080;
     private static final String HOST = "http://localhost:" + PORT;
@@ -28,17 +28,18 @@ public class CliAddJenkinsJobTest {
     private static final TemporaryFolder jobsFolder = new TemporaryFolder();
     private static final ArgumentCaptor<Collection> triggeredJobsCollectionArgument = ArgumentCaptor.forClass(Collection.class);
     private static final ArgumentCaptor<Job> jobArgument = ArgumentCaptor.forClass(Job.class);
+    private static final BuildStatusMonitor buildStatusMonitor = mock(BuildStatusMonitor.class);;
 
     private static JSONObject job;
-    private static BuildStatusMonitor buildStatusMonitor;
 
     @BeforeClass
     public static void setup() throws IOException {
 
         jobsFolder.create();
-        buildStatusMonitor = mock(BuildStatusMonitor.class);
-        CommandLineInterface cli = new CommandLineInterface(jobsFolder.getRoot().getAbsolutePath(), buildStatusMonitor);
+
+        JobService cli = new JobService(jobsFolder.getRoot().getAbsolutePath(), buildStatusMonitor);
         cli.addJenkinsJob(HOST, JOB_NAME, USER_NAME, PASSWORD);
+
         readJobFromJsonFile();
     }
 
