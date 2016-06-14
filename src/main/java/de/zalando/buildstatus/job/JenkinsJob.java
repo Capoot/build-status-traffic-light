@@ -67,7 +67,7 @@ public class JenkinsJob implements Job {
     }
 
     @Override
-    public String getDetails() {
+    public String getPrintableDetails() {
         return name + "\t(jenkins)\t" + url;
     }
 

@@ -6,5 +6,5 @@ public interface Job {
 
     String getName();
 
-    String getDetails();
+    String getPrintableDetails();
 }

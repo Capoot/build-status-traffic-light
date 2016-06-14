@@ -4,10 +4,7 @@ import de.zalando.buildstatus.display.Display;
 import de.zalando.buildstatus.job.Job;
 import de.zalando.buildstatus.job.JobStatus;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 public class BuildStatusMonitor {
 
@@ -96,13 +93,5 @@ public class BuildStatusMonitor {
         }
 
         jobs.remove(job);
-    }
-
-    public List<String> listJobDetails() {
-        List<String> details = new ArrayList<>(jobs.size());
-        for(Job job : jobs) {
-            details.add(job.getDetails());
-        }
-        return Collections.unmodifiableList(details);
     }
 }

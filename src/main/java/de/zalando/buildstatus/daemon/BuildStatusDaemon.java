@@ -75,4 +75,6 @@ public class BuildStatusDaemon implements Runnable {
     public void stop() {
         isStopped = true;
     }
+
+    // TODO: we need something to re-read the config
 }
