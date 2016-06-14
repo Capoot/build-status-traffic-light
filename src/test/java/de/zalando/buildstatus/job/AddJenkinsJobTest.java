@@ -56,8 +56,8 @@ public class AddJenkinsJobTest {
     }
 
     @Test
-    public void jobFileShouldContainCorrectUrl() {
-        assertEquals(HOST + "/" + JOB_NAME + "/api/json", job.getString("url"));
+    public void jobFileShouldContainCorrecHostUrlWithAdditionalSlash() {
+        assertEquals(HOST + "/", job.getString("host"));
     }
 
     @Test

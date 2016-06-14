@@ -51,8 +51,8 @@ public class UpdateJenkinsJobTest {
     }
 
     @Test
-    public void jobJsonShouldHaveNewdUrl() {
-        assertEquals(FULL_JOB_URL, jobJson.getString("url"));
+    public void jobJsonShouldHaveNewHostUrl() {
+        assertEquals(HOST, jobJson.getString("host"));
     }
 
     @Test
