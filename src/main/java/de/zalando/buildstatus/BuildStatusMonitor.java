@@ -52,7 +52,7 @@ public class BuildStatusMonitor {
         displayStatus = null;
     }
 
-    public void setDisplayStatus(JobStatus displayStatus) {
+    private void setDisplayStatus(JobStatus displayStatus) {
         if(currentStatusIsFailed() && displayStatus != JobStatus.FAILED_ANIMATION) {
             return;
         }
