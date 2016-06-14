@@ -1,6 +1,6 @@
-package de.zalando.buildstatus;
+package de.zalando.buildstatus.job;
 
-import de.zalando.buildstatus.job.JobService;
+import de.zalando.buildstatus.BuildStatusMonitor;
 import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
