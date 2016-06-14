@@ -1,5 +1,6 @@
 {
-  "url":"http://jenkins:8080/deletejob/api/json",
+  "type" : "jenkins",
+  "host":"http://jenkins:8080",
   "userName":"testUser",
   "password":"testPassword"
 }

@@ -37,8 +37,8 @@ public class AddJenkinsJobTest {
 
         jobsFolder.create();
 
-        JobService cli = new JobService(jobsFolder.getRoot().getAbsolutePath(), buildStatusMonitor);
-        cli.addJenkinsJob(HOST, JOB_NAME, USER_NAME, PASSWORD);
+        JobService jobService = new JobService(jobsFolder.getRoot().getAbsolutePath(), buildStatusMonitor);
+        jobService.addJenkinsJob(HOST, JOB_NAME, USER_NAME, PASSWORD);
 
         readJobFromJsonFile();
     }

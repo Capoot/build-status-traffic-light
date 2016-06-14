@@ -12,6 +12,7 @@ public class JenkinsJob implements Job {
     private final String authHeader;
     private final String url;
     private final String name;
+    private final String host;
 
     public JenkinsJob(String host, String jobName, String user, String password) {
 
@@ -19,12 +20,14 @@ public class JenkinsJob implements Job {
             host = host + "/";
         }
 
+        this.host = host;
         url = host + jobName + "/api/json";
         name = jobName;
 
         String basicAuthString = user + ":" + password;
         this.authHeader = Base64.encodeBase64String(basicAuthString.getBytes());
     }
+
 
     @Override
     public JobStatus queryStatus() {
@@ -68,7 +71,11 @@ public class JenkinsJob implements Job {
         return name + "\t(jenkins)\t" + url;
     }
 
-    String getUrl() {
+    public String getUrl() {
         return url;
+    }
+
+    public String getHost() {
+        return host;
     }
 }
