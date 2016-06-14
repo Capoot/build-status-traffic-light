@@ -1,5 +1,6 @@
 package de.zalando.buildstatus;
 
+import de.zalando.buildstatus.job.JobService;
 import org.apache.commons.io.IOUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

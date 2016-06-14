@@ -1,10 +1,11 @@
 package de.zalando.buildstatus.cli;
 
-import de.zalando.buildstatus.BuildStatusIndicator;
+import de.zalando.buildstatus.display.Display;
 import de.zalando.buildstatus.BuildStatusMonitor;
-import de.zalando.buildstatus.Job;
-import de.zalando.buildstatus.JobsIO;
-import de.zalando.buildstatus.LinuxClewareTrafficLight;
+import de.zalando.buildstatus.job.Job;
+import de.zalando.buildstatus.job.JobsIO;
+import de.zalando.buildstatus.display.ClewareTrafficLightDisplay;
+import de.zalando.buildstatus.display.SystemOutDisplay;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -16,7 +17,7 @@ public class CommandLineInterface {
         CommandLineOptions options = new CommandLineOptions(args);
 
         Collection<Job> jobs = readJobsFromFile();
-        BuildStatusIndicator display = initDisplay(options);
+        Display display = initDisplay(options);
         BuildStatusMonitor buildStatusMonitor = new BuildStatusMonitor(jobs, display);
 
         if("list".equals(args[0])) {
@@ -37,12 +38,12 @@ public class CommandLineInterface {
         return jobs;
     }
 
-    private static BuildStatusIndicator initDisplay(CommandLineOptions options) {
-        BuildStatusIndicator display;
+    private static Display initDisplay(CommandLineOptions options) {
+        Display display;
         if(options.isSystemOutDisplay()) {
-            display = new SystemOutBuildStatusIndicator();
+            display = new SystemOutDisplay();
         } else {
-            display = new LinuxClewareTrafficLight();
+            display = new ClewareTrafficLightDisplay();
         }
         return display;
     }

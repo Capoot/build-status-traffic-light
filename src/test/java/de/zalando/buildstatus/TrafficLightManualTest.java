@@ -1,10 +1,12 @@
 package de.zalando.buildstatus;
 
+import de.zalando.buildstatus.display.ClewareTrafficLightDisplay;
+
 public class TrafficLightManualTest {
 
     public static void main(String[] args) throws Exception {
 
-        LinuxClewareTrafficLight light = new LinuxClewareTrafficLight();
+        ClewareTrafficLightDisplay light = new ClewareTrafficLightDisplay();
 
         System.out.println("Red light on for 5 sec...");
         light.displayFailure(false);

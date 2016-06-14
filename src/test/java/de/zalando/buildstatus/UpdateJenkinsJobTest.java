@@ -1,5 +1,8 @@
 package de.zalando.buildstatus;
 
+import de.zalando.buildstatus.job.JenkinsJob;
+import de.zalando.buildstatus.job.Job;
+import de.zalando.buildstatus.job.JobService;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import org.junit.AfterClass;

@@ -1,4 +1,6 @@
-package de.zalando.buildstatus;
+package de.zalando.buildstatus.job;
+
+import de.zalando.buildstatus.BuildStatusMonitor;
 
 import java.io.File;
 import java.io.IOException;

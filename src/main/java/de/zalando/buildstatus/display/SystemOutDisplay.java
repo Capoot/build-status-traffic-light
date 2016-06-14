@@ -1,6 +1,6 @@
-package de.zalando.buildstatus.cli;
+package de.zalando.buildstatus.display;
 
-public class SystemOutBuildStatusIndicator implements de.zalando.buildstatus.BuildStatusIndicator {
+public class SystemOutDisplay implements Display {
 
     @Override
     public void displayFailure(boolean flashing) {

@@ -1,4 +1,4 @@
-package de.zalando.buildstatus;
+package de.zalando.buildstatus.job;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;

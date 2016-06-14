@@ -1,5 +1,9 @@
 package de.zalando.buildstatus;
 
+import de.zalando.buildstatus.display.Display;
+import de.zalando.buildstatus.job.Job;
+import de.zalando.buildstatus.job.JobStatus;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,10 +12,10 @@ import java.util.List;
 public class BuildStatusMonitor {
 
     private final Collection<Job> jobs;
-    private final BuildStatusIndicator indicator;
+    private final Display indicator;
     private JobStatus displayStatus;
 
-    public BuildStatusMonitor(Collection<Job> jobs, BuildStatusIndicator indicator) {
+    public BuildStatusMonitor(Collection<Job> jobs, Display indicator) {
         this.jobs = jobs;
         this.indicator = indicator;
     }
