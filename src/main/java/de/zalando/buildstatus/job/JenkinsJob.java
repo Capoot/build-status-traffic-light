@@ -7,6 +7,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import static org.apache.http.util.TextUtils.isEmpty;
+
 public class JenkinsJob implements Job {
 
     private final String authHeader;
@@ -16,18 +18,28 @@ public class JenkinsJob implements Job {
 
     public JenkinsJob(String host, String jobName, String user, String password) {
 
+        if(isEmpty(host) || isEmpty(jobName)) {
+            throw new IllegalArgumentException("host + jobName args must not be empty");
+        }
+
+        if(!host.startsWith("http://")) {
+            host = "http://" + host;
+        }
+        this.host = host;
         if(!host.endsWith("/")) {
             host = host + "/";
         }
 
-        this.host = host;
         url = host + jobName + "/api/json";
         name = jobName;
 
         String basicAuthString = user + ":" + password;
-        this.authHeader = Base64.encodeBase64String(basicAuthString.getBytes());
+        if(!isEmpty(user) && !isEmpty(password)) {
+            authHeader = Base64.encodeBase64String(basicAuthString.getBytes());
+        } else {
+            authHeader = null;
+        }
     }
-
 
     @Override
     public JobStatus queryStatus() {
