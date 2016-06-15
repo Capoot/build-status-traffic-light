@@ -6,12 +6,10 @@ import static java.lang.Long.parseLong;
 
 public class DaemonConfig {
 
-    private final String dataPath;
     private final long pollingInterval;
     private final boolean systemOutDisplay;
 
     public DaemonConfig(Properties properties) {
-        dataPath = readMandatoryProperty("dataPath", properties);
         pollingInterval = parseLong(readMandatoryProperty("pollingInterval", properties));
         systemOutDisplay = "true".equalsIgnoreCase(properties.getProperty("useSystemOutDisplay"));
     }
@@ -21,10 +19,6 @@ public class DaemonConfig {
             throw new IllegalStateException("missing mandatory property [" + key + "] in config");
         }
         return properties.getProperty(key);
-    }
-
-    public String getDataPath() {
-        return dataPath;
     }
 
     public long getPollingInterval() {

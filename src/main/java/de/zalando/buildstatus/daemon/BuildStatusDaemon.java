@@ -5,23 +5,29 @@ import de.zalando.buildstatus.display.ClewareTrafficLightDisplay;
 import de.zalando.buildstatus.display.Display;
 import de.zalando.buildstatus.display.SystemOutDisplay;
 import de.zalando.buildstatus.job.JobsIO;
+import org.apache.commons.daemon.Daemon;
+import org.apache.commons.daemon.DaemonContext;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class BuildStatusDaemon implements Runnable {
+public class BuildStatusDaemon implements Daemon {
 
-    private static final String DEFAULT_CONF_DIR = "/etc/te-buildstatus";
+    private static final String DEFAULT_CONF_DIR = "/etc/te/";
+    private static final String DEFAULT_DATA_DIR = "/var/te/";
 
     // TODO: ask colleagues if they know a good strategy to test daemon code
+
+    private String confDir;
+    private String dataDir;
 
     private boolean isStopped = false;
     private DaemonConfig config;
     private BuildStatusMonitor buildStatusMonitor;
 
     @Override
-    public void run() {
+    public void start() {
 
         readConfig();
         initBuildStatusMonitor();
@@ -32,10 +38,6 @@ public class BuildStatusDaemon implements Runnable {
     }
 
     private void readConfig() {
-        String confDir = System.getenv("TE_CONF_DIR");
-        if(confDir == null || confDir.isEmpty()) {
-            confDir = DEFAULT_CONF_DIR;
-        }
         Properties p = new Properties();
         try {
             p.load(new FileInputStream(confDir));
@@ -48,7 +50,7 @@ public class BuildStatusDaemon implements Runnable {
     private void initBuildStatusMonitor() {
         Display display = initDisplay(config);
         try {
-            buildStatusMonitor = new BuildStatusMonitor(JobsIO.readJobs(config.getDataPath()), display);
+            buildStatusMonitor = new BuildStatusMonitor(JobsIO.readJobs(dataDir), display);
         } catch (IOException e) {
             throw new RuntimeException("failed to init build status monitor", e);
         }
@@ -72,9 +74,27 @@ public class BuildStatusDaemon implements Runnable {
         }
     }
 
+    @Override
     public void stop() {
         isStopped = true;
     }
 
-    // TODO: we need something to re-read the config
+    @Override
+    public void destroy() {
+
+    }
+
+    @Override
+    public void init(DaemonContext daemonContext) throws Exception {
+        confDir = readFromEnvOrDefault("TE_CONF_DIR", DEFAULT_CONF_DIR);
+        dataDir = readFromEnvOrDefault("TE_DATA_DIR", DEFAULT_DATA_DIR);
+    }
+
+    public String readFromEnvOrDefault(String envKey, String defaultValue) {
+        String value = System.getenv(envKey);
+        if(value == null || value.isEmpty()) {
+            return defaultValue;
+        }
+        return value;
+    }
 }
