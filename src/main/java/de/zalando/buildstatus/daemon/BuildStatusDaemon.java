@@ -14,8 +14,10 @@ import java.util.Properties;
 
 public class BuildStatusDaemon implements Daemon {
 
-    private static final String DEFAULT_CONF_DIR = "/etc/te/";
-    private static final String DEFAULT_DATA_DIR = "/var/te/";
+    public static final String DEFAULT_CONF_DIR = "/etc/te/";
+    public static final String DEFAULT_DATA_DIR = "/var/te/";
+    public static final String CONF_DIR_ENV_KEY = "TE_CONF_DIR";
+    public static final String DATA_DIR_ENV_KEY = "TE_DATA_DIR";
 
     private String confDir;
     private String dataDir;
@@ -83,11 +85,11 @@ public class BuildStatusDaemon implements Daemon {
 
     @Override
     public void init(DaemonContext daemonContext) throws Exception {
-        confDir = readFromEnvOrDefault("TE_CONF_DIR", DEFAULT_CONF_DIR);
-        dataDir = readFromEnvOrDefault("TE_DATA_DIR", DEFAULT_DATA_DIR);
+        confDir = readFromEnvOrDefault(CONF_DIR_ENV_KEY, DEFAULT_CONF_DIR);
+        dataDir = readFromEnvOrDefault(DATA_DIR_ENV_KEY, DEFAULT_DATA_DIR);
     }
 
-    public String readFromEnvOrDefault(String envKey, String defaultValue) {
+    private String readFromEnvOrDefault(String envKey, String defaultValue) {
         String value = System.getenv(envKey);
         if(value == null || value.isEmpty()) {
             return defaultValue;
