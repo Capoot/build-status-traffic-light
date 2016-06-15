@@ -15,16 +15,31 @@ public class JobCli {
 
     public static void main(String[] args) {
 
+        if(args.length < 1) {
+            printUsage();
+            System.exit(-1);
+        }
+
         try {
             switch(args[0]) {
                 case "list" : listJobDetails(); break;
                 case "add-jenkins" : addJenkinsJob(args); break;
+                case "remove" : removeJob(args[1]); break;
                 default: printUsage();
             }
         } catch(Exception e) {
             System.err.println(e.toString());
             System.exit(-1);
         }
+    }
+
+    private static void printUsage() {
+        System.out.println("Usage:");
+        System.out.println("----------------------------------------------------------------");
+        System.out.println("  - list");
+        System.out.println("  - add-jenkins --host http://my-jenkins.com --jobName my-job --user ldap-user --password" +
+                " ldap-password");
+        System.out.println("  - remove <jobName> (retrieve the job name via list command)");
     }
 
     private static void listJobDetails() throws IOException {
@@ -50,19 +65,20 @@ public class JobCli {
     private static void addJenkinsJob(String[] args) throws IOException {
 
         String host = getOption("host", args);
-        String job = getOption("job", args);
+        String job = getOption("jobName", args);
         String user = getOption("user", args);
         String password = getOption("password", args);
 
         new JenkinsJob(host, job, user, password); // to validate
         JobsIO.writeJenkinsJobToFile(host, job, user, password, new File(getDataDir()));
+        restartDaemon();
     }
 
-    private static void printUsage() {
-        System.out.println("Usage:");
-        System.out.println("------------------------");
-        System.out.println("  - list");
-        System.out.println("  - add-jenkins --host http://my-jenkins.com --job my-job --user ldap-user --password " +
-                "ldap-password");
+    private static void restartDaemon() {
+        throw new RuntimeException("todo");
+    }
+
+    private static void removeJob(String jobId) throws IOException {
+        JobsIO.deleteJobFile(new File(getDataDir()), jobId);
     }
 }
