@@ -17,8 +17,6 @@ public class BuildStatusDaemon implements Daemon {
     private static final String DEFAULT_CONF_DIR = "/etc/te/";
     private static final String DEFAULT_DATA_DIR = "/var/te/";
 
-    // TODO: ask colleagues if they know a good strategy to test daemon code
-
     private String confDir;
     private String dataDir;
 
@@ -68,7 +66,6 @@ public class BuildStatusDaemon implements Daemon {
         try {
             Thread.sleep(config.getPollingInterval());
         } catch (InterruptedException e) {
-            // TODO: research whether we have to exit when we were interrupted
             System.err.println("Got interrupted; trying to exit gracefully...");
             isStopped = true;
         }
