@@ -1,0 +1,7 @@
+#!/bin/bash
+
+LIBDIR=../../../target/lib
+JARNAME=../../../target/build-status-traffic-light-1.0.0-SNAPSHOT.jar
+MAINCLASS=de.zalando.buildstatus.cli.JobCli
+
+java -cp $LIBDIR/*:$JARNAME $MAINCLASS $@
