@@ -71,11 +71,6 @@ public class JobCli {
 
         new JenkinsJob(host, job, user, password); // to validate
         JobsIO.writeJenkinsJobToFile(host, job, user, password, new File(getDataDir()));
-        restartDaemon();
-    }
-
-    private static void restartDaemon() {
-        throw new RuntimeException("todo");
     }
 
     private static void removeJob(String jobId) throws IOException {

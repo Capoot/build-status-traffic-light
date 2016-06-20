@@ -20,6 +20,7 @@ public class JobsIO {
         json.put("host", host);
         json.put("userName", userName);
         json.put("password", password);
+        json.put("type", JenkinsJob.JOBTYPE);
         writeJobJsonToFile(dest, jobName, json);
     }
 

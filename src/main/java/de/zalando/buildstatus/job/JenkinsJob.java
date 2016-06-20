@@ -11,6 +11,7 @@ import static org.apache.http.util.TextUtils.isEmpty;
 
 public class JenkinsJob implements Job {
 
+    public static final String JOBTYPE = "jenkins";
     private final String authHeader;
     private final String url;
     private final String name;
