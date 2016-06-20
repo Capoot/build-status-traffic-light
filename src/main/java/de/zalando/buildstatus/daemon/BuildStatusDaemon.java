@@ -4,12 +4,14 @@ import de.zalando.buildstatus.BuildStatusMonitor;
 import de.zalando.buildstatus.display.ClewareTrafficLightDisplay;
 import de.zalando.buildstatus.display.Display;
 import de.zalando.buildstatus.display.SystemOutDisplay;
+import de.zalando.buildstatus.job.Job;
 import de.zalando.buildstatus.job.JobsIO;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Properties;
 
 public class BuildStatusDaemon implements Daemon {
@@ -33,7 +35,7 @@ public class BuildStatusDaemon implements Daemon {
         initBuildStatusMonitor();
 
         do {
-            pollStatus(config, buildStatusMonitor);
+            pollStatus();
         } while(!isStopped);
     }
 
@@ -49,11 +51,7 @@ public class BuildStatusDaemon implements Daemon {
 
     private void initBuildStatusMonitor() {
         Display display = initDisplay(config);
-        try {
-            buildStatusMonitor = new BuildStatusMonitor(JobsIO.readJobs(dataDir), display);
-        } catch (IOException e) {
-            throw new RuntimeException("failed to init build status monitor", e);
-        }
+        buildStatusMonitor = new BuildStatusMonitor(display);
     }
 
     private Display initDisplay(DaemonConfig config) {
@@ -63,8 +61,16 @@ public class BuildStatusDaemon implements Daemon {
         return new ClewareTrafficLightDisplay();
     }
 
-    private void pollStatus(DaemonConfig config, BuildStatusMonitor buildStatusMonitor) {
-        buildStatusMonitor.update();
+    private void pollStatus() {
+
+        Collection<Job> jobs;
+        try {
+            jobs = JobsIO.readJobs(dataDir);
+        } catch (IOException e) {
+            throw new RuntimeException("failed to read jobs", e);
+        }
+
+        buildStatusMonitor.update(jobs);
         try {
             Thread.sleep(config.getPollingInterval());
         } catch (InterruptedException e) {

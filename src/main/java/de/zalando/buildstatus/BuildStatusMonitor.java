@@ -8,17 +8,11 @@ import java.util.Collection;
 
 public class BuildStatusMonitor {
 
-    private final Collection<Job> jobs;
     private final Display indicator;
     private JobStatus displayStatus;
 
-    public BuildStatusMonitor(Collection<Job> jobs, Display indicator) {
-        this.jobs = jobs;
+    public BuildStatusMonitor(Display indicator) {
         this.indicator = indicator;
-    }
-
-    public void update() {
-        update(jobs);
     }
 
     public void update(Collection<Job> jobs) {
@@ -69,29 +63,5 @@ public class BuildStatusMonitor {
 
     private boolean currentStatusIsUnstable() {
         return this.displayStatus == JobStatus.UNSTABLE || this.displayStatus == JobStatus.UNSTABLE_ANIMATION;
-    }
-
-    public void addJob(Job job) {
-        if(jobs.contains(job)) {
-            throw new IllegalStateException("duplicate job");
-        }
-        jobs.add(job);
-    }
-
-    public void removeJob(String jobName) {
-
-        Job job = null;
-        for(Job j : jobs) {
-            if(j.getName().equals(jobName)) {
-                job = j;
-                break;
-            }
-        }
-
-        if(job == null) {
-            throw new IllegalStateException("no such job: [" + jobName + "]");
-        }
-
-        jobs.remove(job);
     }
 }
