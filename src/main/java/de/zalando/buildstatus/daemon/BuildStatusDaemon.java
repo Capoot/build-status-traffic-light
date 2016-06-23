@@ -28,15 +28,37 @@ public class BuildStatusDaemon implements Daemon {
     private DaemonConfig config;
     private BuildStatusMonitor buildStatusMonitor;
 
+    private Thread daemonThread;
+
+    @Override
+    public void init(DaemonContext daemonContext) throws Exception {
+
+        confDir = readFromEnvOrDefault(CONF_DIR_ENV_KEY, DEFAULT_CONF_DIR);
+        dataDir = readFromEnvOrDefault(DATA_DIR_ENV_KEY, DEFAULT_DATA_DIR);
+
+        daemonThread = new Thread(() -> {
+
+            readConfig();
+            initBuildStatusMonitor();
+
+            do {
+                pollStatus();
+            } while(!isStopped);
+        });
+    }
+
+    private String readFromEnvOrDefault(String envKey, String defaultValue) {
+        String value = System.getenv(envKey);
+        if(value == null || value.isEmpty()) {
+            return defaultValue;
+        }
+        return value;
+    }
+
     @Override
     public void start() {
-
-        readConfig();
-        initBuildStatusMonitor();
-
-        do {
-            pollStatus();
-        } while(!isStopped);
+        isStopped = false;
+        daemonThread.start();
     }
 
     private void readConfig() {
@@ -82,24 +104,15 @@ public class BuildStatusDaemon implements Daemon {
     @Override
     public void stop() {
         isStopped = true;
+        try {
+            daemonThread.join(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void destroy() {
 
-    }
-
-    @Override
-    public void init(DaemonContext daemonContext) throws Exception {
-        confDir = readFromEnvOrDefault(CONF_DIR_ENV_KEY, DEFAULT_CONF_DIR);
-        dataDir = readFromEnvOrDefault(DATA_DIR_ENV_KEY, DEFAULT_DATA_DIR);
-    }
-
-    private String readFromEnvOrDefault(String envKey, String defaultValue) {
-        String value = System.getenv(envKey);
-        if(value == null || value.isEmpty()) {
-            return defaultValue;
-        }
-        return value;
     }
 }

@@ -16,34 +16,23 @@ successfully. If only one job fails, the traffic light will display failure.
 - **Flashing (any color):** there is at least one job currently building; the color is from the last outcome before 
 the current build
 
-## Command line interface
+# Install and run
 
-The build status monitor has a command line interface (CLI) to add, remove, update and list current jobs. In order to
-work, CLI requires the environment variable ```TE_DATA_DIR``` set to a location where jobs are stored. This 
-environment variable will also be used by the daemon to read the jobs. It may point to any directory to which the 
-user has read/write access (also, make sure it's consistent with the daemon).
+TODO: how to download and use predefined image
 
-The command to invoke the CLI is ```tebs``` and supports the following actions:
+## Install Clewarecontrol Software
 
-### Add Jenkins job
+TODO: how to...
 
-- ```add-jenkins```
-    * ```--host <host>``` the host should be written as URL, as in ```http://jenkins-host:8080```
-    * ```--jobname <jobname>``` the name of the job, as it is referenced in Jenkins. This job name will also be used 
-    to reference the job configuration for the build status monitor.
-    * ```--user <username>``` name of the user which should be used for accessing the Jenkins API
-    * ```--password <password/token>``` password or personal access token for the user accessing the Jenkins API; you
-     can create a personal access token via ```http://<jenkins-server>/user/<username>/configure```
+## Install Apache JSVC
 
-**We recommend using the personal access token instead of the password!** If the token ever gets into wrong hands it 
-can be easily invalidated via ```http://<jenkins-server>/user/<username>/configure```.
+TODO: how to...
 
-### Remove job
+## Install Build Status Daemon
 
-- ```remove <jobname>``` removes the job identified by ```jobname```. An overview of available jobs and their names 
-can be retrieved via the list command (see below)
+TODO: note to myself:
 
-### List jobs
-
-- ```list``` lists an overview of all jobs currently configured
-
+    TE_LIB_DIR=${system.libDir}
+    TE_BIN_DIR=${system.binDir}
+    TE_CONF_DIR=${system.confDir}
+    TE_DATA_DIR=${system.dataDir}

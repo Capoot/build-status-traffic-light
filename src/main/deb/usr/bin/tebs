@@ -1,4 +1,0 @@
-#!/bin/bash
-
-source /etc/te/te_environment.sh
-java -cp $TE_LIB_DIR/*:$TE_BIN_DIR${project.build.finalName}.jar de.zalando.buildstatus.cli.JobCli $@
