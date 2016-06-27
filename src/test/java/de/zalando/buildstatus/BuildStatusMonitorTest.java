@@ -34,6 +34,7 @@ public class BuildStatusMonitorTest {
     @Mock private Display display;
 
     private BuildStatusMonitor monitor;
+    private int port= 8081;
 
 
     public BuildStatusMonitorTest() throws IOException {
@@ -51,7 +52,7 @@ public class BuildStatusMonitorTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mockServer = new ClientAndServer(8080);
+        mockServer = new ClientAndServer(port);
         monitor = new BuildStatusMonitor(display);
     }
 
@@ -73,7 +74,7 @@ public class BuildStatusMonitorTest {
         for(String s : json) {
             String jobName = "job" + i++;
             configureJenkinsJob(jobName, s);
-            jobs.add(new JenkinsJob("http://localhost:8080/", jobName, "user", "password", true));
+            jobs.add(new JenkinsJob("http://localhost:" + port +"/", jobName, "user", "password", true));
         }
         return jobs;
     }
