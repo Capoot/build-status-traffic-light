@@ -11,9 +11,6 @@
     <properties>
         <java-version>1.8</java-version>
 
-        <docker.maintainer>team-besting@zalando.de</docker.maintainer>
-        <docker.baseImage>zalando/openjdk:8u66-b17-1-2</docker.baseImage>
-
         <system.binDir>/usr/bin/te/</system.binDir>
         <system.libDir>/usr/lib/te/</system.libDir>
         <system.confDir>/etc/te/</system.confDir>

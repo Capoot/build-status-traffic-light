@@ -73,7 +73,7 @@ public class BuildStatusMonitorTest {
         for(String s : json) {
             String jobName = "job" + i++;
             configureJenkinsJob(jobName, s);
-            jobs.add(new JenkinsJob("http://localhost:8080/", jobName, "user", "password"));
+            jobs.add(new JenkinsJob("http://localhost:8080/", jobName, "user", "password", true));
         }
         return jobs;
     }
@@ -82,7 +82,7 @@ public class BuildStatusMonitorTest {
         mockServer
             .when(request()
                 .withMethod("GET")
-                .withPath("/" + jobId + "/api/json"))
+                .withPath("/job/" + jobId + "/api/json"))
             .respond(response()
                 .withStatusCode(200)
                 .withHeader("Content-Type", "application/json")
