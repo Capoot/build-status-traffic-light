@@ -69,13 +69,13 @@ public class ClewareTrafficLightDisplay implements Display {
     @Override
     public void displayFailure(boolean flashing) {
 
-        lightsOff();
-
         if(flashing) {
             startFlashing(RED_LIGHT_ARGUMENT);
         }
 
-        setLight(true, RED_LIGHT_ARGUMENT);
+        setLight(true, RED_LIGHT_ARGUMENT, false);
+        setLight(false, GREEN_LIGHT_ARGUMENT, false);
+        setLight(false, YELLOW_LIGHT_ARGUMENT, false);
     }
 
     private void startFlashing(int color) {
@@ -86,53 +86,57 @@ public class ClewareTrafficLightDisplay implements Display {
     @Override
     public void displaySuccess(boolean flashing) {
 
-        lightsOff();
-
         if(flashing) {
             startFlashing(GREEN_LIGHT_ARGUMENT);
         }
 
-        setLight(true, GREEN_LIGHT_ARGUMENT);
+        setLight(true, GREEN_LIGHT_ARGUMENT, false);
+        setLight(false, RED_LIGHT_ARGUMENT, false);
+        setLight(false, YELLOW_LIGHT_ARGUMENT, false);
     }
 
     @Override
     public void displayUnstable(boolean flashing) {
 
-        lightsOff();
-
         if(flashing) {
             startFlashing(YELLOW_LIGHT_ARGUMENT);
         }
 
-        setLight(true, YELLOW_LIGHT_ARGUMENT);
+        setLight(true, YELLOW_LIGHT_ARGUMENT, false);
+        setLight(false, GREEN_LIGHT_ARGUMENT, false);
+        setLight(false, RED_LIGHT_ARGUMENT, false);
     }
 
-    private void setLight(boolean status, int color) {
+    private void setLight(boolean status, int color, boolean wait) {
 
         String lightStatus = status ? "1" : "0";
-        ProcessBuilder pb = new ProcessBuilder("clewarecontrol", "-c", "1", "-d", String.valueOf(deviceId), "-as",
-                String.valueOf(color), lightStatus);
+        ProcessBuilder pb = new ProcessBuilder("clewarecontrol", "-i", "0", "-c", "1", "-d", String.valueOf(deviceId),
+                "-as", String.valueOf(color), lightStatus);
 
         Process p;
-        String error;
+        String error = null;
         try {
             p = pb.start();
-            p.waitFor();
-            error = IOUtils.toString(p.getErrorStream());
-        } catch (IOException | InterruptedException e) {
+            if(wait) {
+                p.waitFor();
+                error = IOUtils.toString(p.getErrorStream());
+            }
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        if(error != null && !error.isEmpty() && !"0\r".equals(error)) { // TODO: make sure "0\r" is really always no error
-            throw new RuntimeException("failed to access traffic light: " + error);
+        if(wait) {
+            if (error != null && !error.isEmpty() && !"0\r".equals(error)) {
+                throw new RuntimeException("failed to access traffic light: " + error);
+            }
         }
     }
 
     public void lightsOff() {
         cancelFlashing();
-        setLight(false, GREEN_LIGHT_ARGUMENT);
-        setLight(false, RED_LIGHT_ARGUMENT);
-        setLight(false, YELLOW_LIGHT_ARGUMENT);
+        setLight(false, GREEN_LIGHT_ARGUMENT, false);
+        setLight(false, RED_LIGHT_ARGUMENT, false);
+        setLight(false, YELLOW_LIGHT_ARGUMENT, true);
     }
 
     private void cancelFlashing() {
@@ -156,7 +160,7 @@ public class ClewareTrafficLightDisplay implements Display {
 
             boolean status = true;
             while(!isCancelled) {
-                setLight(status, color);
+                setLight(status, color, false);
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
