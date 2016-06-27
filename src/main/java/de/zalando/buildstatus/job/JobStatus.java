@@ -1,4 +1,4 @@
-package de.zalando.buildstatus;
+package de.zalando.buildstatus.job;
 
 public enum JobStatus {
     SUCCESS,

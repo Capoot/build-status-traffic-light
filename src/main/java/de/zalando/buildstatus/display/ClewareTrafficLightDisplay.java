@@ -1,4 +1,4 @@
-package de.zalando.buildstatus;
+package de.zalando.buildstatus.display;
 
 import org.apache.commons.io.IOUtils;
 
@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  *
  * <p><strong>!!! Requires root privileges to run !!!</strong></p>
  */
-public class LinuxClewareTrafficLight implements BuildStatusIndicator {
+public class ClewareTrafficLightDisplay implements Display {
 
     private static final Pattern NUMBER_OF_DEVICES_PATTERN =
             Pattern.compile(".*Number of Cleware devices found: (\\d*).*", Pattern.DOTALL);
@@ -28,7 +28,7 @@ public class LinuxClewareTrafficLight implements BuildStatusIndicator {
 
     private FlashingLight currentFlashingRunnable;
 
-    public LinuxClewareTrafficLight() {
+    public ClewareTrafficLightDisplay() {
 
         ProcessBuilder pb = new ProcessBuilder("clewarecontrol", "-l");
 

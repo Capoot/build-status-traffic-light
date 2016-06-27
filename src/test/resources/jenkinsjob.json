@@ -1,0 +1,6 @@
+{
+  "type" : "jenkins",
+  "host":"http://jenkins:8080",
+  "userName":"testUser",
+  "password":"testPassword"
+}

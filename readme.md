@@ -1,39 +1,38 @@
 # Build Status Traffic Light
 
-This project contains bash scripts for connecting Jenkins jobs with the Build Status Traffic Light. Additional 
-information about installing the Clewarecontrol drivers and workarounds for known problems can be found here (request
- read access if you can't open the doc):
+This software allows a number of CI Jobs (e.g. Jenkins) to be monitored and reports the corresponding job's status by
+switching the color of a traffic light. Supports multiple jobs: will display green only if **all** of the jobs build 
+successfully. If only one job fails, the traffic light will display failure.
+ 
+ Currently supported traffic lights:
+ 
+ - http://www.cleware-shop.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F41%2FSubProducts%2F41-1
 
-https://docs.google.com/document/d/1UCllGJj2ZUeLe1vxnVTs1pRWzoleir_1C9he31zUW6c/view
+## Signal color code
 
-## Configuration
+- **Red:** at least one job failed to build
+- **Yellow:** at least one job's build was unstable (failing tests)
+- **Green:** all of the jobs built successfully
+- **Flashing (any color):** there is at least one job currently building; the color is from the last outcome before 
+the current build
 
-In order for the script to work, open it in an editor and modify the following values:
+# Install and run
 
-    USER= username that is used for login to Jenkins
-    PASSWORD= password to access to Jenkins
-    JENKINS_SERVER= URL of the jenkins server
-    JOB_NAME= name of the job you want to follow
-    DEVICE_NO= device number of traffic light
+TODO: how to download and use predefined image
 
-To get the device number, run the following command on the machine where the traffic light software is installed:
+## Install Clewarecontrol Software
 
-    > sudo clewarecontrol -l
-    
-## Convenience Script
+TODO: how to...
 
-The script in ```bash/light.sh``` provides a convenient way of controlling the traffic light manually from command 
-line. Invoke as privileged user, e.g. root or with sudo.
+## Install Apache JSVC
 
-```
-> sudo ./light.sh (red|yellow|green) (on|off)
-```
+TODO: how to...
 
+## Install Build Status Daemon
 
-Example usage:
+TODO: note to myself:
 
-```
-> sudo ./light.sh red on
-> sudo ./light.sh green off
-```
-
+    TE_LIB_DIR=${system.libDir}
+    TE_BIN_DIR=${system.binDir}
+    TE_CONF_DIR=${system.confDir}
+    TE_DATA_DIR=${system.dataDir}

@@ -1,19 +1,21 @@
 package de.zalando.buildstatus;
 
+import de.zalando.buildstatus.display.Display;
+import de.zalando.buildstatus.job.Job;
+import de.zalando.buildstatus.job.JobStatus;
+
 import java.util.Collection;
 
 public class BuildStatusMonitor {
 
-    private final Collection<Job> jobs;
-    private final BuildStatusIndicator indicator;
+    private final Display indicator;
     private JobStatus displayStatus;
 
-    public BuildStatusMonitor(Collection<Job> jobs, BuildStatusIndicator indicator) {
-        this.jobs = jobs;
+    public BuildStatusMonitor(Display indicator) {
         this.indicator = indicator;
     }
 
-    public void update() {
+    public void update(Collection<Job> jobs) {
 
         clearDisplayStatus();
         for (Job job : jobs) {
@@ -45,7 +47,7 @@ public class BuildStatusMonitor {
         displayStatus = null;
     }
 
-    public void setDisplayStatus(JobStatus displayStatus) {
+    private void setDisplayStatus(JobStatus displayStatus) {
         if(currentStatusIsFailed() && displayStatus != JobStatus.FAILED_ANIMATION) {
             return;
         }

@@ -1,10 +1,12 @@
 package de.zalando.buildstatus;
 
+import de.zalando.buildstatus.display.ClewareTrafficLightDisplay;
+
 public class TrafficLightBlinkingManualTest {
 
     public static void main(String[] args) throws Exception {
 
-        LinuxClewareTrafficLight light = new LinuxClewareTrafficLight();
+        ClewareTrafficLightDisplay light = new ClewareTrafficLightDisplay();
 
         System.out.println("start flashing red light for 10 seconds...");
         light.displayFailure(true);

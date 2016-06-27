@@ -1,6 +1,6 @@
-package de.zalando.buildstatus;
+package de.zalando.buildstatus.display;
 
-public interface BuildStatusIndicator {
+public interface Display {
     void displayFailure(boolean flashing);
     void displaySuccess(boolean flashing);
     void displayUnstable(boolean flashing);
