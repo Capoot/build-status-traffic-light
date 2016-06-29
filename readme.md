@@ -24,15 +24,68 @@ TODO: how to download and use predefined image
 
 TODO: how to...
 
-## Install Apache JSVC
-
-TODO: how to...
-
 ## Install Build Status Daemon
 
-TODO: note to myself:
+Obtain a release archive, either via download from releases in the GitHub repo:
+https://github.bus.zalan.do/testing-excellence/build-status-lamp
 
-    TE_LIB_DIR=${system.libDir}
-    TE_BIN_DIR=${system.binDir}
-    TE_CONF_DIR=${system.confDir}
-    TE_DATA_DIR=${system.dataDir}
+Or build it yourself with Maven:
+
+```
+mvn -P release package
+```
+
+Copy the resulting archive to your desired location, unpack it and change into the directory
+
+```
+tar xfz te-buildstatus-1.0.0.tar.gz
+cd te-buildstatus-1.0.0
+```
+
+Open ```daemon.sh``` and add the TEBS_HOME variable before the function ```startDaemon``` at line 11:
+
+```
+...
+### END INIT INFO
+
+export TEBS_HOME=/full/path/to/your/installation/te-buildstatus-1.0.0/
+
+function startDaemon {
+...
+```
+
+Save the changes to the script. As an alternative you may find your own way to supply the environment variable 
+```TEBS_HOME``` to the ```daemon.sh``` script.
+
+## Running the build status daemon
+
+After having completed the installation as described above, you may run the script ```daemon.sh``` with the arguments
+ ```start|stop|restart``` (requires root privileges!).
+ 
+E.g.: 
+```
+./daemon.sh start
+Starting Build Status Traffic light...
+./daemon.sh stop
+Stopping Build Status Traffic light...
+```
+
+## Configuring the build status daemon to run at system boot
+
+Create a soft link to the script in ```/etc/init.d``` (requires root privileges) 
+
+```
+ln -s /full/path/to/your/installation/te-buildstatus-1.0.0/daemon.sh /etc/init.d/tebs-daemon
+```
+
+Try running it:
+
+```
+/etc/init.d/tebs-daemon start
+```
+
+Now create an update-rc entry:
+
+```
+update-rc.d tebs-daemon defaults
+```
