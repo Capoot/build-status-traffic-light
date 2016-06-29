@@ -146,3 +146,28 @@ Now create an update-rc entry:
 ```
 update-rc.d tebs-daemon defaults
 ```
+
+# Configure a Jenkins job
+
+The Jenkins Job info will got in the ```$TEBS_HOME/data``` dir (create if not present). Create a file and name it the
+same as the corresponding job in Jenkins, and attach the file ending ```.json``` (every job will be configured in 
+it's own file).
+ 
+Example:
+
+Jenkins job name: build-status-traffic-light
+File name: build-status-traffic-light.json
+
+The file should have the following content:
+
+```
+{
+	"type" : "jenkins",
+	"host" : "https://besting.ci.zalan.do",
+	"userName" : "johndoe",
+	"password" : "ws3f6deh7z6gu6ug",
+	"acceptInsecureSslCert" : "true"
+}
+```
+
+As a password you can also specify Jenkins API tokens
