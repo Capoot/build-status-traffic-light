@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.fail;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -202,10 +201,5 @@ public class BuildStatusMonitorTest {
         monitor.update(createJobsListFromJson(jenkinsJobYellowAnimatedJson, jenkinsJobBlueJson));
         Mockito.verify(display, Mockito.times(1)).displayUnstable(true);
         Mockito.verifyNoMoreInteractions(display);
-    }
-
-    @Test
-    public void failonpurpose() {
-        fail("test");
     }
 }
