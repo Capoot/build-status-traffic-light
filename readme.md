@@ -18,11 +18,69 @@ the current build
 
 # Install and run
 
-TODO: how to download and use predefined image
-
 ## Install Clewarecontrol Software
 
-TODO: how to...
+This software controls the traffic light via USB and is a precondition. For the installation it has to be downloaded 
+and built via make. The following instructions work for Raspian.
+
+1. Download from
+https://www.vanheusden.com/clewarecontrol/files/clewarecontrol-4.1.tgz
+
+2. Install hidabpi library
+
+```
+sudo apt-get install libhidapi-dev
+```
+
+3. Create file ```/usr/share/pkgconfig/hidapi.pc```
+
+```
+prefix=/usr 
+exec_prefix=${prefix} 
+includedir=${prefix}/include 
+libdir=${exec_prefix}/lib/arm-linux-gnueabihf
+
+Name: hidapi 
+Description: The hidapi library 
+Version: 4.1
+Cflags: -I${includedir}/hidapi
+Libs: -L${libdir} -llibhidapi-hidraw -llibhidapi-libusb
+```
+
+4. Run:
+```
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/share/pkgconfig
+```
+
+5. Run:
+```
+ln -s /usr/lib/arm-linux-gnueabihf/libhidapi-libusb.so.0.0.0 /usr/lib/arm-linux-gnueabihf/liblibhidapi-libusb.so
+ln -s /usr/lib/arm-linux-gnueabihf/libhidapi-hidraw.so.0.0.0 /usr/lib/arm-linux-gnueabihf/liblibhidapi-hidraw.so
+```
+
+6. Run:
+```
+ld -llibhidapi-libusb --verbose
+ld -llibhidapi-hidraw --verbose
+```
+
+7. navigate to clewarecontrol-4.1 folder and run:
+
+```
+make install
+```
+
+8. Test installation, run:
+
+```
+clewarecontrol -l
+```
+
+Note: on a system different from Raspian you might have to locate the libraries first. Do it using:
+
+```
+ldconfig -p | grep libhidapi
+```
 
 ## Install Build Status Daemon
 
@@ -82,6 +140,7 @@ Try running it:
 
 ```
 /etc/init.d/tebs-daemon start
+Starting Build Status Traffic light...
 ```
 
 Now create an update-rc entry:
