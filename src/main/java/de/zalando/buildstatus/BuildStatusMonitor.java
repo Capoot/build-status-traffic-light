@@ -24,22 +24,22 @@ public class BuildStatusMonitor {
         }
         switch(displayStatus) {
             case FAILED:
-                indicator.displayFailure(false);
+                indicator.displayFailure();
                 break;
             case SUCCESS:
-                indicator.displaySuccess(false);
+                indicator.displaySuccess();
                 break;
             case UNSTABLE:
-                indicator.displayUnstable(false);
+                indicator.displayUnstable();
                 break;
             case FAILED_ANIMATION:
-                indicator.displayFailure(true);
+                indicator.displayFailure();
                 break;
             case UNSTABLE_ANIMATION:
-                indicator.displayUnstable(true);
+                indicator.displayUnstable();
                 break;
             case SUCCESS_ANIMATION:
-                indicator.displaySuccess(true);
+                indicator.displaySuccess();
         }
     }
 

@@ -9,15 +9,15 @@ public class TrafficLightManualTest {
         ClewareTrafficLightDisplay light = new ClewareTrafficLightDisplay();
 
         System.out.println("Red light on for 5 sec...");
-        light.displayFailure(false);
+        light.displayFailure();
         Thread.sleep(5000L);
 
         System.out.println("Yellow light on for 5 sec...");
-        light.displayUnstable(false);
+        light.displayUnstable();
         Thread.sleep(5000L);
 
         System.out.println("Green light on for 5 sec...");
-        light.displaySuccess(false);
+        light.displaySuccess();
         Thread.sleep(5000L);
 
         System.out.println("All lights off...");

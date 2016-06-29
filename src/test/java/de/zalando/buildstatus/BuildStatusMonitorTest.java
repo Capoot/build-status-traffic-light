@@ -64,7 +64,7 @@ public class BuildStatusMonitorTest {
     @Test
     public void ifJenkinsJobIsRedIndicatorShouldDisplayFailed() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobRedJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(false);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
@@ -94,112 +94,112 @@ public class BuildStatusMonitorTest {
     @Test
     public void ifJenkinsJobIsYellowIndicatorShouldDisplayUnstable() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobYellowJson));
-        Mockito.verify(display, Mockito.times(1)).displayUnstable(false);
+        Mockito.verify(display, Mockito.times(1)).displayUnstable();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void ifJenkinsJobIsBlueIndicatorShouldDisplaySuccess() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobBlueJson));
-        Mockito.verify(display, Mockito.times(1)).displaySuccess(false);
+        Mockito.verify(display, Mockito.times(1)).displaySuccess();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void ifAtLeastOneJobIsFailedIndicatorShouldDisplayFailure() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobBlueJson, jenkinsJobRedJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(false);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void ifAtLeastOneJobIsUnstableIndicatorShouldDisplayUnstable() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobBlueJson, jenkinsJobYellowJson));
-        Mockito.verify(display, Mockito.times(1)).displayUnstable(false);
+        Mockito.verify(display, Mockito.times(1)).displayUnstable();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void ifThereAreUnstableAndFailedJobsIndicatorShouldDisplayFailed() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobRedJson, jenkinsJobYellowJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(false);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void ifAllJobsAreSuccessIndicatorShouldDisplaySuccess() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobBlueJson, jenkinsJobBlueJson));
-        Mockito.verify(display, Mockito.times(1)).displaySuccess(false);
+        Mockito.verify(display, Mockito.times(1)).displaySuccess();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
-    public void ifJenkinsJobIsBlueAnimatedIndicatorShouldDisplaySuccessBlinking() throws Exception {
+    public void ifJenkinsJobIsBlueAnimatedIndicatorShouldDisplaySuccess() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobBlueAnimatedJson));
-        Mockito.verify(display, Mockito.times(1)).displaySuccess(true);
+        Mockito.verify(display, Mockito.times(1)).displaySuccess();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
-    public void ifJenkinsJobIsRedAnimatedIndicatorShouldDisplayFailureBlinking() throws Exception {
+    public void ifJenkinsJobIsRedAnimatedIndicatorShouldDisplayFailure() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobRedAnimatedJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(true);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
-    public void ifJenkinsJobIsYellowAnimatedIndicatorShouldDisplayUnstableBlinking() throws Exception {
+    public void ifJenkinsJobIsYellowAnimatedIndicatorShouldDisplayUnstable() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobRedAnimatedJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(true);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void successBlinkingStatusShouldOverrideNonBlinkingStatus() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobBlueJson, jenkinsJobBlueAnimatedJson));
-        Mockito.verify(display, Mockito.times(1)).displaySuccess(true);
+        Mockito.verify(display, Mockito.times(1)).displaySuccess();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void unstableBlinkingStatusShouldOverrideNonBlinkingStatus() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobYellowJson, jenkinsJobYellowAnimatedJson));
-        Mockito.verify(display, Mockito.times(1)).displayUnstable(true);
+        Mockito.verify(display, Mockito.times(1)).displayUnstable();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void failureBlinkingStatusShouldOverrideNonBlinkingStatus() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobRedJson, jenkinsJobRedAnimatedJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(true);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void failureBlinkingStatusShouldOverrideSuccessStatus() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobRedAnimatedJson, jenkinsJobBlueJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(true);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void failureBlinkingStatusShouldOverrideUnstableStatus() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobYellowJson, jenkinsJobRedAnimatedJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(true);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void unstableBlinkingStatusShouldNotOverrideFailedStatus() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobYellowAnimatedJson, jenkinsJobRedJson));
-        Mockito.verify(display, Mockito.times(1)).displayFailure(false);
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 
     @Test
     public void unstableBlinkingStatusShouldOverrideSuccessStatus() throws Exception {
         monitor.update(createJobsListFromJson(jenkinsJobYellowAnimatedJson, jenkinsJobBlueJson));
-        Mockito.verify(display, Mockito.times(1)).displayUnstable(true);
+        Mockito.verify(display, Mockito.times(1)).displayUnstable();
         Mockito.verifyNoMoreInteractions(display);
     }
 }

@@ -67,12 +67,7 @@ public class ClewareTrafficLightDisplay implements Display {
     }
 
     @Override
-    public void displayFailure(boolean flashing) {
-
-        if(flashing) {
-            startFlashing(RED_LIGHT_ARGUMENT);
-        }
-
+    public void displayFailure() {
         setLight(true, RED_LIGHT_ARGUMENT, false);
         setLight(false, GREEN_LIGHT_ARGUMENT, false);
         setLight(false, YELLOW_LIGHT_ARGUMENT, true);
@@ -84,24 +79,14 @@ public class ClewareTrafficLightDisplay implements Display {
     }
 
     @Override
-    public void displaySuccess(boolean flashing) {
-
-        if(flashing) {
-            startFlashing(GREEN_LIGHT_ARGUMENT);
-        }
-
+    public void displaySuccess() {
         setLight(true, GREEN_LIGHT_ARGUMENT, false);
         setLight(false, RED_LIGHT_ARGUMENT, false);
         setLight(false, YELLOW_LIGHT_ARGUMENT, true);
     }
 
     @Override
-    public void displayUnstable(boolean flashing) {
-
-        if(flashing) {
-            startFlashing(YELLOW_LIGHT_ARGUMENT);
-        }
-
+    public void displayUnstable() {
         setLight(true, YELLOW_LIGHT_ARGUMENT, false);
         setLight(false, GREEN_LIGHT_ARGUMENT, false);
         setLight(false, RED_LIGHT_ARGUMENT, true);
