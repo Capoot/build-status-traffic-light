@@ -13,8 +13,6 @@ successfully. If only one job fails, the traffic light will display failure.
 - **Red:** at least one job failed to build
 - **Yellow:** at least one job's build was unstable (failing tests)
 - **Green:** all of the jobs built successfully
-- **Flashing (any color):** there is at least one job currently building; the color is from the last outcome before 
-the current build
 
 # Install and run
 
