@@ -10,7 +10,7 @@
             <includes>
                 <include>*.jar</include>
             </includes>
-            <lineEnding>unix</lineEnding>
+            <lineEnding>keep</lineEnding>
         </fileSet>
         <fileSet>
             <directory>target</directory>
@@ -18,7 +18,7 @@
             <includes>
                 <include>*.jar</include>
             </includes>
-            <lineEnding>unix</lineEnding>
+            <lineEnding>keep</lineEnding>
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
@@ -26,8 +26,9 @@
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>*.sh</include>
+                <include>tebs</include>
             </includes>
-            <lineEnding>unix</lineEnding>
+            <lineEnding>keep</lineEnding>
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
@@ -35,7 +36,7 @@
             <includes>
                 <include>readme.md</include>
             </includes>
-            <lineEnding>unix</lineEnding>
+            <lineEnding>keep</lineEnding>
             <fileMode>0755</fileMode>
         </fileSet>
     </fileSets>
