@@ -75,7 +75,7 @@ public class ClewareTrafficLightDisplay implements Display {
 
         setLight(true, RED_LIGHT_ARGUMENT, false);
         setLight(false, GREEN_LIGHT_ARGUMENT, false);
-        setLight(false, YELLOW_LIGHT_ARGUMENT, false);
+        setLight(false, YELLOW_LIGHT_ARGUMENT, true);
     }
 
     private void startFlashing(int color) {
@@ -92,7 +92,7 @@ public class ClewareTrafficLightDisplay implements Display {
 
         setLight(true, GREEN_LIGHT_ARGUMENT, false);
         setLight(false, RED_LIGHT_ARGUMENT, false);
-        setLight(false, YELLOW_LIGHT_ARGUMENT, false);
+        setLight(false, YELLOW_LIGHT_ARGUMENT, true);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ClewareTrafficLightDisplay implements Display {
 
         setLight(true, YELLOW_LIGHT_ARGUMENT, false);
         setLight(false, GREEN_LIGHT_ARGUMENT, false);
-        setLight(false, RED_LIGHT_ARGUMENT, false);
+        setLight(false, RED_LIGHT_ARGUMENT, true);
     }
 
     private void setLight(boolean status, int color, boolean wait) {
