@@ -13,10 +13,13 @@ import static org.mockserver.model.HttpResponse.response;
 public class SimpleHttpClientTest {
 
     private ClientAndServer mockServer;
+    private final int port = 8081;
+    private final String path = "/test";
+    private final String url = "http://localhost:" + port + "" + path;
 
     @Before
     public void setup() {
-        mockServer = ClientAndServer.startClientAndServer(8081);
+        mockServer = ClientAndServer.startClientAndServer(port);
     }
 
     @After
@@ -28,13 +31,13 @@ public class SimpleHttpClientTest {
     public void sendRequestWithBasicAuth() {
 
         final String expectedResponse = "hello john";
-        final String path = "/test";
+
 
         mockServer.when(
                 request().withPath(path).withHeader("Authorization: Basic am9obmRvZTpwYXNzd29yZA==")).respond(
                 response().withStatusCode(200).withBody(expectedResponse));
 
-        String response = new SimpleHttpClient().sendGetWithBasicAuth("http://localhost:8081" + path, "johndoe",
+        String response = new SimpleHttpClient().sendGetWithBasicAuth(url, "johndoe",
                 "password", false);
         assertEquals(expectedResponse, response);
     }
@@ -49,7 +52,7 @@ public class SimpleHttpClientTest {
                 request().withPath(path)).respond(
                 response().withStatusCode(200).withBody(expectedResponse));
 
-        new SimpleHttpClient().sendGetWithBasicAuth("http://localhost:8081" + path, null, null, false);
+        new SimpleHttpClient().sendGetWithBasicAuth(url, null, null, false);
 
         HttpRequest[] actualRequests = mockServer.retrieveRecordedRequests(request().withPath(path));
         assertEquals(1, actualRequests.length);

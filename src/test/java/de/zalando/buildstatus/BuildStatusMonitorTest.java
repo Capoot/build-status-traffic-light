@@ -35,7 +35,7 @@ public class BuildStatusMonitorTest {
     @Mock private Display display;
 
     private BuildStatusMonitor monitor;
-    private int port= 8081;
+    private int port= 8082;
 
 
     public BuildStatusMonitorTest() throws IOException {
