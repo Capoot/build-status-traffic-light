@@ -1,6 +1,7 @@
 package de.zalando.buildstatus;
 
 import de.zalando.buildstatus.display.Display;
+import de.zalando.buildstatus.http.SimpleHttpClient;
 import de.zalando.buildstatus.job.JenkinsJob;
 import de.zalando.buildstatus.job.Job;
 import org.apache.commons.io.IOUtils;
@@ -53,7 +54,7 @@ public class BuildStatusMonitorTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         mockServer = new ClientAndServer(port);
-        monitor = new BuildStatusMonitor(display);
+        monitor = new BuildStatusMonitor(display, new SimpleHttpClient());
     }
 
     @After
