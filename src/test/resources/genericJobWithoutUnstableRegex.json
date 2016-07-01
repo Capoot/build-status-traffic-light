@@ -1,0 +1,8 @@
+{
+  "type" : "generic-rest-api",
+  "url" : "https://myhost:8081/myjob",
+  "userName" : "johndoe",
+  "password" : "password",
+  "acceptInsecureSslCert" : "true",
+  "successRegex" : ".*success.*"
+}

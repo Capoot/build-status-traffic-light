@@ -1,6 +1,7 @@
 package de.zalando.buildstatus;
 
 import de.zalando.buildstatus.display.Display;
+import de.zalando.buildstatus.http.SimpleHttpClient;
 import de.zalando.buildstatus.job.Job;
 import de.zalando.buildstatus.job.JobStatus;
 
@@ -9,17 +10,19 @@ import java.util.Collection;
 public class BuildStatusMonitor {
 
     private final Display indicator;
+    private final SimpleHttpClient httpClient;
     private JobStatus displayStatus;
 
-    public BuildStatusMonitor(Display indicator) {
+    public BuildStatusMonitor(Display indicator, SimpleHttpClient httpClient) {
         this.indicator = indicator;
+        this.httpClient = httpClient;
     }
 
-    public void update(Collection<Job> jobs) {
+    public void updateDisplay(Collection<Job> jobs) {
 
         clearDisplayStatus();
         for (Job job : jobs) {
-            JobStatus status = job.queryStatus();
+            JobStatus status = job.queryStatus(httpClient);
             setDisplayStatus(status);
         }
         switch(displayStatus) {
