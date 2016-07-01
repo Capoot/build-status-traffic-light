@@ -24,6 +24,9 @@ import static org.apache.http.util.TextUtils.isEmpty;
 
 public class SimpleHttpClient {
 
+    private HttpClient defaultClient;
+    private HttpClient insecureSslClient;
+
     public String sendGetWithBasicAuth(String url, String userName, String password,
             boolean acceptInsecureSslCert) {
 
@@ -35,17 +38,25 @@ public class SimpleHttpClient {
         }
 
         try {
-            HttpGet get = new HttpGet(url);
-            addAuthHeader(userName, password, get);
-            HttpResponse response = client.execute(get);
-            int statusCode = response.getStatusLine().getStatusCode();
-            if(statusCode != 200) {
-                throw new RuntimeException("failed to access [" + url + "] status code [" + statusCode + "]");
-            }
-            return IOUtils.toString(response.getEntity().getContent());
+            return sendGetWithBasicAuth(url, userName, password, client);
         } catch (IOException e) {
             throw new RuntimeException("failed to send request to Jenkins API", e);
         }
+    }
+
+    private String sendGetWithBasicAuth(String url, String userName, String password, HttpClient client)
+            throws IOException {
+
+        HttpGet get = new HttpGet(url);
+        addAuthHeader(userName, password, get);
+        HttpResponse response = client.execute(get);
+
+        int statusCode = response.getStatusLine().getStatusCode();
+        if(statusCode != 200) {
+            throw new RuntimeException("failed to access [" + url + "] status code [" + statusCode + "]");
+        }
+
+        return IOUtils.toString(response.getEntity().getContent());
     }
 
     private void addAuthHeader(String userName, String password, HttpGet request) {
@@ -55,12 +66,25 @@ public class SimpleHttpClient {
         }
     }
 
-    private HttpClient buildClient(boolean acceptInsecureSslCert) throws KeyStoreException,
-            NoSuchAlgorithmException, KeyManagementException, IOException {
+    private HttpClient buildClient(boolean acceptInsecureSslCert) throws KeyStoreException, NoSuchAlgorithmException,
+            KeyManagementException, IOException {
 
         if(!acceptInsecureSslCert) {
-            return HttpClients.createDefault();
+            if(defaultClient == null) {
+                defaultClient = HttpClients.createDefault();
+            }
+            return defaultClient;
         }
+
+        if(insecureSslClient == null) {
+            initInsecureSslHttpClient();
+        }
+
+        return insecureSslClient;
+    }
+
+    private void initInsecureSslHttpClient() throws NoSuchAlgorithmException, KeyManagementException,
+            KeyStoreException {
 
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
         SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (arg0, arg1) -> true).build();
@@ -74,6 +98,6 @@ public class SimpleHttpClient {
                 .register("https", sslSocketFactory)
                 .build();
 
-        return httpClientBuilder.build();
+        insecureSslClient = httpClientBuilder.build();
     }
 }
