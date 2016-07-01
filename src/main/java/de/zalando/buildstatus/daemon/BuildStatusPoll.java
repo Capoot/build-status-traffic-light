@@ -13,6 +13,6 @@ public class BuildStatusPoll {
                 new ClewareTrafficLightDisplay(),
                 new SimpleHttpClient());
 
-        monitor.update(JobsIO.readJobs(args[0]));
+        monitor.updateDisplay(JobsIO.readJobs(args[0]));
     }
 }

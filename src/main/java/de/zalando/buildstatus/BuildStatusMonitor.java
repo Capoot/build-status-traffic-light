@@ -18,7 +18,7 @@ public class BuildStatusMonitor {
         this.httpClient = httpClient;
     }
 
-    public void update(Collection<Job> jobs) {
+    public void updateDisplay(Collection<Job> jobs) {
 
         clearDisplayStatus();
         for (Job job : jobs) {
