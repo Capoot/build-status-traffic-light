@@ -75,4 +75,12 @@ public class JenkinsJob implements Job {
     public boolean isAcceptInsecureSslCert() {
         return acceptInsecureSslCert;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

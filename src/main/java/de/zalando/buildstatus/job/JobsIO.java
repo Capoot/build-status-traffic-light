@@ -1,6 +1,7 @@
 package de.zalando.buildstatus.job;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -45,14 +46,40 @@ public class JobsIO {
         String type = json.getString("type");
 
         if(JenkinsJob.TYPE.equalsIgnoreCase(type)) {
-            return new JenkinsJob(
-                    json.getString("host"),
-                    jobName, json.getString("userName"),
-                    json.getString("password"),
-                    json.getBoolean("acceptInsecureSslCert"));
+            return readJenkinsJob(jobName, json);
+        }
+        if(GenericRestApiJob.TYPE.equalsIgnoreCase(type)) {
+            return readGenericRestApiJob(json);
         }
 
         throw new RuntimeException("unknown job type: [" + type);
+    }
+
+    private static Job readJenkinsJob(String jobName, JSONObject json) {
+        return new JenkinsJob(
+                json.getString("host"),
+                jobName,
+                readOptionalJsonAttribute(json, "userName"),
+                readOptionalJsonAttribute(json, "password"),
+                json.getBoolean("acceptInsecureSslCert"));
+    }
+
+    private static Job readGenericRestApiJob(JSONObject json) {
+        return new GenericRestApiJob(
+                json.getString("url"),
+                readOptionalJsonAttribute(json, "userName"),
+                readOptionalJsonAttribute(json, "password"),
+                json.getString("successRegex"),
+                readOptionalJsonAttribute(json, "unstableRegex"),
+                json.getBoolean("acceptInsecureSslCert"));
+    }
+
+    private static String readOptionalJsonAttribute(JSONObject json, String key) {
+        try {
+            return json.getString(key);
+        } catch(JSONException e) {
+            return null;
+        }
     }
 
     private static String extractJobNameFromFilePath(String path) {

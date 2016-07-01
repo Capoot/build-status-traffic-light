@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 public class GenericRestApiJob implements Job {
 
+    public static final String TYPE = "generic-rest-api";
+
     private final String url;
     private final Pattern successPattern;
     private final Pattern unstablePattern;
@@ -22,7 +24,11 @@ public class GenericRestApiJob implements Job {
         this.acceptSelfSignedSslCert = acceptSelfSignedSslCert;
 
         successPattern = Pattern.compile(successRegex);
-        unstablePattern = Pattern.compile(unstableRegex);
+        if(unstableRegex != null && !unstableRegex.isEmpty()) {
+            unstablePattern = Pattern.compile(unstableRegex);
+        } else {
+            unstablePattern = null;
+        }
     }
 
     @Override
@@ -34,7 +40,7 @@ public class GenericRestApiJob implements Job {
             return JobStatus.SUCCESS;
         }
 
-        if(unstablePattern.matcher(responseText).matches()) {
+        if(unstablePattern != null && unstablePattern.matcher(responseText).matches()) {
             return JobStatus.UNSTABLE;
         }
 
@@ -49,5 +55,32 @@ public class GenericRestApiJob implements Job {
     @Override
     public String getPrintableDetails() {
         throw new RuntimeException("not implemented");
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public boolean isAcceptSelfSignedSslCert() {
+        return acceptSelfSignedSslCert;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getSuccessRegex() {
+        return successPattern.toString();
+    }
+
+    public String getUnstableRegex() {
+        if(unstablePattern == null) {
+            return null;
+        }
+        return unstablePattern.toString();
     }
 }
