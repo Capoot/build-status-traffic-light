@@ -36,10 +36,11 @@ then
 
         FILES="${path}/data/*"
         DIR=$(pwd)
+        mkdir ${DIR}/data/
         for f in $FILES
         do
-            BASENAME=$(basename f)
-            echo "copying job file $f to $DIR/data/$BASENAME..."
+            BASENAME=$(basename $f)
+            echo "copying job file $f to ${DIR}/data/${BASENAME}..."
             cp $f ${DIR}/data/${BASENAME}
         done
 
@@ -50,9 +51,9 @@ then
     fi
 fi
 
-echo "Updating daemon link /etc/init.d/tebs-daemon to point to ${NEW_PATH}/daemon.sh..."
+echo "Updating daemon link /etc/init.d/tebs-daemon to point to ${NEW_PATH}/daemon.sh"
 
 rm /etc/init.d/tebs-daemon
 ln -s ${NEW_PATH}/daemon.sh /etc/init.d/tebs-daemon
-update-rc.d /etc/init.d/tebs-daemon defaults
+update-rc.d tebs-daemon defaults
 /etc/init.d/tebs-daemon start
