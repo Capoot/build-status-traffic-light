@@ -149,7 +149,7 @@ update-rc.d tebs-daemon defaults
 
 # Configure a Jenkins job
 
-The Jenkins Job info will got in the ```$TEBS_HOME/data``` dir (create if not present). Create a file and name it the
+The Jenkins Job info will go in the ```$TEBS_HOME/data``` dir (create if not present). Create a file and name it the
 same as the corresponding job in Jenkins, and attach the file ending ```.json``` (every job will be configured in 
 it's own file).
  
