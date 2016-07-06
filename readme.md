@@ -21,10 +21,10 @@ successfully. If only one job fails, the traffic light will display failure.
 This software controls the traffic light via USB and is a precondition. For the installation it has to be downloaded 
 and built via make. The following instructions work for Raspian.
 
-1. Either download from
+1. Either download from  
    https://www.vanheusden.com/clewarecontrol/files/clewarecontrol-4.1.tgz
    
-   or clone from GitHub repo (unfortunately, version 4.1 is not tagged)
+   or clone from GitHub repo (unfortunately, version 4.1 is not tagged)  
    https://github.com/flok99/clewarecontrol
 
 2. Install hidabpi library
