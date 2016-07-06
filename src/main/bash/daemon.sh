@@ -9,7 +9,14 @@
 # Description:       Control the TEBS daemon and should be placed in /etc/init.d
 ### END INIT INFO
 
-path=$(readlink -f /etc/init.d/tebs-daemon)
+if [ -L $0 ]
+then
+    path=$(readlink -f $0)
+
+else
+    path=$0
+fi
+
 path=$(dirname $path)
 path=$(cd $path && pwd)
 export TEBS_HOME=$path
