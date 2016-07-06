@@ -108,7 +108,14 @@ you will be asked if you want to import jobs from your old installation. The ins
 and set the software up to be started automatically at boot. It will create the init script ```/etc/init.d/tebs-daemon```
 which you can call with the arguments ```start```, ```stop``` or ```restart```.
 
-# Configure a Jenkins job
+# Configuration
+
+The Testing Excellence Build Status Traffic Light may query a number of build jobs, e.g. from Jenkins, and display 
+the result via the traffic light. The light will turn green if all jobs pass and red if at least one job fails. Jobs 
+are stored as JSON files in the data directory of your installation. You may backup these files and copy them to 
+another installation, e.g. on another machine. 
+
+## Configure a Jenkins job
 
 The Jenkins Job info will go in the ```$TEBS_HOME/data``` dir (create if not present). Create a file and name it the
 same as the corresponding job in Jenkins, and attach the file ending ```.json``` (every job will be configured in 
@@ -133,7 +140,7 @@ The file should have the following content:
 
 As a password you can also specify Jenkins API tokens
 
-# Configure a generic job
+## Configure a generic job
 
 There is a generic job format which can send a GET request to any URL and parse the result with a regex. To create 
 such a job, create a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses Java format,
