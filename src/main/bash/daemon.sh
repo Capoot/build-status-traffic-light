@@ -9,10 +9,15 @@
 # Description:       Control the TEBS daemon and should be placed in /etc/init.d
 ### END INIT INFO
 
+path=$(readlink -f /etc/init.d/tebs-daemon)
+path=$(dirname $path)
+path=$(cd $path && pwd)
+export TEBS_HOME=$path
+
 function startDaemon {
     if [ -e ${TEBS_HOME}/pid ]
     then
-        echo "PID file exists... service might be running. Delete ${TEBS_HOME}/pid} to override"
+        echo "PID file exists, service might be running. Delete ${TEBS_HOME}/pid to override"
         exit 1
     fi
     echo "Starting Build Status Traffic light..."

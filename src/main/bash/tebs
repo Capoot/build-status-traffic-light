@@ -5,11 +5,16 @@ TE_BIN_DIR="${TEBS_HOME}/bin"
 
 CLASS_PATH="$TE_LIB_DIR/*:$TE_BIN_DIR/${project.build.finalName}.jar"
 MAIN_CLASS="de.zalando.buildstatus.daemon.BuildStatusPoll"
-LOG_OUT="$TEBS_HOME/log/tebs.log"
+
+if [ $1 == "-version" ]
+then
+    java -cp $CLASS_PATH $MAIN_CLASS -version
+    exit 0
+fi
 
 while true
 do
     cd $TEBS_HOME
-    java -cp $CLASS_PATH $MAIN_CLASS "$TEBS_HOME/data" 2>&1 | tee $LOG_OUT
+    java -cp $CLASS_PATH $MAIN_CLASS "$TEBS_HOME/data" > /dev/null 2>&1
     sleep 30s
 done

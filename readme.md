@@ -171,3 +171,24 @@ The file should have the following content:
 ```
 
 As a password you can also specify Jenkins API tokens
+
+# Configure a generic job
+
+There is a generic job format which can send a GET request to any URL and parse the result with a regex. To create 
+such a job, create a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses Java format,
+see: https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+
+The job will use the provided credentials to perform basic auth via HTTP. You can also opt to not specify userName 
+and password in order to access an unprotected API.
+
+```
+{
+  "type" : "generic-rest-api",
+  "url" : "https://myhost:8081/myjob",
+  "userName" : "johndoe",
+  "password" : "password",
+  "acceptInsecureSslCert" : "true",
+  "successRegex" : ".*success.*",
+  "unstableRegex" : ".*test failures.*"
+}
+```
