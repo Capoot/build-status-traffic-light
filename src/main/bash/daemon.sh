@@ -5,14 +5,28 @@
 # Provides:          tebs_daemon
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
 # Short-Description: Starts the TEBS service
-# Description:       Control the TEBS daemon and should be placed in /etc/init.d
+# Description:       Controls the TEBS daemon and should be placed in /etc/init.d/
 ### END INIT INFO
+
+if [ -L $0 ]
+then
+    path=$(readlink -f $0)
+
+else
+    path=$0
+fi
+
+path=$(dirname $path)
+path=$(cd $path && pwd)
+export TEBS_HOME=$path
 
 function startDaemon {
     if [ -e ${TEBS_HOME}/pid ]
     then
-        echo "PID file exists... service might be running. Delete ${TEBS_HOME}/pid} to override"
+        echo "PID file exists, service might be running. Delete ${TEBS_HOME}/pid to override"
         exit 1
     fi
     echo "Starting Build Status Traffic light..."
