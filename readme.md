@@ -19,7 +19,8 @@ successfully. If only one job fails, the traffic light will display failure.
 ## Install Clewarecontrol Software
 
 This software controls the traffic light via USB and is a precondition. For the installation it has to be downloaded 
-and built via make. The following instructions work for Raspian.
+and built via make. The following instructions work for Raspian. Please note: this software is build for Clewarecontrol
+version 4.1 and may or may not work with other versions.
 
 1. Either download from  
    https://www.vanheusden.com/clewarecontrol/files/clewarecontrol-4.1.tgz
