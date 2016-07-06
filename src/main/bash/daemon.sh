@@ -5,8 +5,10 @@
 # Provides:          tebs_daemon
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
 # Short-Description: Starts the TEBS service
-# Description:       Control the TEBS daemon and should be placed in /etc/init.d
+# Description:       Controls the TEBS daemon and should be placed in /etc/init.d/
 ### END INIT INFO
 
 if [ -L $0 ]
