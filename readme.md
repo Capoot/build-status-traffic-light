@@ -3,11 +3,13 @@
 This software allows a number of CI Jobs (e.g. Jenkins) to be monitored and reported corresponding to the job's status 
 by switching the color of a USB mini traffic light. The package comes with a Debian daemon and an automated 
 out-of-the-box-installer for Debian based Linux systems. In order to run, the Clewarecontrol software must be built and
-installed manually (see sect. _Install Clewarecontrol Software_).
+installed manually (see sect. [Install Clewarecontrol Software](https://github.com/zalando/build-status-traffic-light#install-clewarecontrol-software).
  
 Currently supported traffic lights:
  
- - http://www.cleware-shop.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F41%2FSubProducts%2F41-1
+ - [Cleware USB-MiniTrafficLight]
+ (http://www.cleware-shop.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F41%2FSubProducts%2F41-1
+ "View product information in the Cleware shop")
 
 This is an early version which might contain bugs. Please report any issues through GitHub; we are interested in 
 continuing development on this product and will respond ASAP. Please also contact us if you think the documentation 
