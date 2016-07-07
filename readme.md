@@ -157,7 +157,7 @@ https://github.com/zalando/build-status-traffic-light/releases
 Or build it yourself with Maven:
 
 ```
-git clone git@github.bus.zalan.do:testing-excellence/build-status-lamp.git
+git clone git@github.com:zalando/build-status-traffic-light.git
 mvn package -P release
 ```
 
