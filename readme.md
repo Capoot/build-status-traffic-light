@@ -186,7 +186,7 @@ happy to get back at you ASAP.
 
 # Contributors
 
-Thanks to our contributors
+Thanks to the contributors
 
 - Sanja Batkovic
 - Julian Heise
