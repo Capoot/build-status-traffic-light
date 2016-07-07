@@ -1,18 +1,83 @@
 # Build Status Traffic Light
 
-This software allows a number of CI Jobs (e.g. Jenkins) to be monitored and reports the corresponding job's status by
-switching the color of a traffic light. Supports multiple jobs: will display green only if **all** of the jobs build 
-successfully. If only one job fails, the traffic light will display failure.
+This software allows a number of CI Jobs (e.g. Jenkins) to be monitored and reported corresponding to the job's status 
+by switching the color of a USB mini traffic light. The package comes with a Debian daemon and an automated 
+out-of-the-box-installer for Debian based Linux systems. In order to run, the Clewarecontrol software must be built and
+installed manually (see sect. _Install Clewarecontrol Software_).
  
- Currently supported traffic lights:
+Currently supported traffic lights:
  
  - http://www.cleware-shop.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F41%2FSubProducts%2F41-1
 
-## Signal color code
+This is an early version which might contain bugs. Please report any issues through GitHub; we are interested in 
+continuing development on this product and will respond ASAP. Please also contact us if you think the documentation 
+is insufficient or incomplete (see ```MAINTAINERS``` file for contact info).
+
+It is our goal to provide an easy to use out of the box experience. If you think that we missed this goal for some 
+reason, we'll be glad to receive your feedback (see ```MAINTAINERS``` file for contact info).
+
+## Jobs
+
+The core concept of the build status monitor is a _job_, which represents an _artifact_ (job / project / etc.) that is 
+build on a continuous integration server (CI). The daemon stores job information in JSON files in the ```data``` 
+sub-directory of the installation directory. A job may be successful (build was finished without error), unstable 
+(test assertion failed) or failed (build cancelled due to unrecoverable error). The status will be displayed on the 
+traffic light with the following colors:
 
 - **Red:** at least one job failed to build
 - **Yellow:** at least one job's build was unstable (failing tests)
 - **Green:** all of the jobs built successfully
+
+Job files are not machine bound and may thus be copied to a backup or another installation, e.g. on a different machine.
+
+## Jenkins job
+
+The Jenkins Job info will go in the ```$TEBS_HOME/data``` dir (create if not present). Create a file and name it the
+same as the corresponding job in Jenkins, and attach the file ending ```.json``` (every job will be configured in 
+it's own file).
+ 
+Example:
+
+Jenkins job name: build-status-traffic-light
+File name: build-status-traffic-light.json
+
+The file should have the following content:
+
+```
+{
+	"type" : "jenkins",
+	"host" : "https://besting.ci.zalan.do",
+	"userName" : "johndoe",                  // optional
+	"password" : "ws3f6deh7z6gu6ug",         // optional
+	"acceptInsecureSslCert" : "true"         // optional, default: false
+}
+```
+
+As a password you can also specify Jenkins API tokens
+
+## Generic job
+
+There is a generic job format which can send a GET request to any URL and parse the result with a regex. To create 
+such a job, create a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses Java format,
+see: https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+
+The job will use the provided credentials to perform basic auth via HTTP. You can also opt to not specify userName 
+and password in order to access an unprotected API.
+
+```
+{
+  "type" : "generic-rest-api",
+  "url" : "https://myhost:8081/myjob",
+  "userName" : "johndoe",                  // optional
+  "password" : "password",                 // optional
+  "acceptInsecureSslCert" : "true",        // optional, default: false
+  "successRegex" : ".*success.*",
+  "unstableRegex" : ".*test failures.*"    // optional
+}
+```
+
+When executed, the job will first try to match the response with the success regex and only if there is no match, it 
+will try to match with the unstable regex. If none of the supplied regex matches, the job will be regarded as failure.
 
 # Install and run
 
@@ -93,7 +158,7 @@ Or build it yourself with Maven:
 
 ```
 git clone git@github.bus.zalan.do:testing-excellence/build-status-lamp.git
-mvn -P release package
+mvn package -P release
 ```
 
 Either way you will have a .tar.gz archive which contains everything you need to install and run the traffic light 
@@ -109,55 +174,45 @@ you will be asked if you want to import jobs from your old installation. The ins
 and set the software up to be started automatically at boot. It will create the init script ```/etc/init.d/tebs-daemon```
 which you can call with the arguments ```start```, ```stop``` or ```restart```.
 
-# Configuration
+# Contributing
 
-The Testing Excellence Build Status Traffic Light may query a number of build jobs, e.g. from Jenkins, and display 
-the result via the traffic light. The light will turn green if all jobs pass and red if at least one job fails. Jobs 
-are stored as JSON files in the data directory of your installation. You may backup these files and copy them to 
-another installation, e.g. on another machine. 
+To contribute, create a fork and pull request. Please note, that we value automated tests and would like to ask all 
+contributors to provide at least the most essential test cases for their changes. We also emphasise code quality and 
+would like to ask all contributors to commit only clean code, according to the Java Coding Conventions (see 
+http://www.oracle.com/technetwork/java/codeconvtoc-136057.html)
 
-## Configure a Jenkins job
+Please contact someone listed in the ```MAINTAINERS``` file if you have a question regarding contribution. We will be 
+happy to get back at you ASAP.
 
-The Jenkins Job info will go in the ```$TEBS_HOME/data``` dir (create if not present). Create a file and name it the
-same as the corresponding job in Jenkins, and attach the file ending ```.json``` (every job will be configured in 
-it's own file).
- 
-Example:
+# Contributors
 
-Jenkins job name: build-status-traffic-light
-File name: build-status-traffic-light.json
+Thanks to the contributors
 
-The file should have the following content:
+- Sanja Batkovic
+- Julian Heise
 
-```
-{
-	"type" : "jenkins",
-	"host" : "https://besting.ci.zalan.do",
-	"userName" : "johndoe",
-	"password" : "ws3f6deh7z6gu6ug",
-	"acceptInsecureSslCert" : "true"
-}
-```
+# Next steps
 
-As a password you can also specify Jenkins API tokens
+- Add support for Travis CI
+- Add support for Go CD
 
-## Configure a generic job
+# Contact
 
-There is a generic job format which can send a GET request to any URL and parse the result with a regex. To create 
-such a job, create a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses Java format,
-see: https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+Please find contact information in the ```MAINTAINERS``` file.
 
-The job will use the provided credentials to perform basic auth via HTTP. You can also opt to not specify userName 
-and password in order to access an unprotected API.
+# License
 
-```
-{
-  "type" : "generic-rest-api",
-  "url" : "https://myhost:8081/myjob",
-  "userName" : "johndoe",
-  "password" : "password",
-  "acceptInsecureSslCert" : "true",
-  "successRegex" : ".*success.*",
-  "unstableRegex" : ".*test failures.*"
-}
-```
+The MIT License (MIT) Copyright © 2016 Zalando SE, https://tech.zalando.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+documentation files (the “Software”), to deal in the Software without restriction, including without limitation the 
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit 
+persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the 
+Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR 
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
