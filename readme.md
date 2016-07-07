@@ -47,9 +47,9 @@ The file should have the following content:
 {
 	"type" : "jenkins",
 	"host" : "https://besting.ci.zalan.do",
-	"userName" : "johndoe",
-	"password" : "ws3f6deh7z6gu6ug",
-	"acceptInsecureSslCert" : "true"
+	"userName" : "johndoe",                  // optional
+	"password" : "ws3f6deh7z6gu6ug",         // optional
+	"acceptInsecureSslCert" : "true"         // optional, default: false
 }
 ```
 
@@ -68,13 +68,16 @@ and password in order to access an unprotected API.
 {
   "type" : "generic-rest-api",
   "url" : "https://myhost:8081/myjob",
-  "userName" : "johndoe",
-  "password" : "password",
-  "acceptInsecureSslCert" : "true",
+  "userName" : "johndoe",                  // optional
+  "password" : "password",                 // optional
+  "acceptInsecureSslCert" : "true",        // optional, default: false
   "successRegex" : ".*success.*",
-  "unstableRegex" : ".*test failures.*"
+  "unstableRegex" : ".*test failures.*"    // optional
 }
 ```
+
+When executed, the job will first try to match the response with the success regex and only if there is no match, it 
+will try to match with the unstable regex. If none of the supplied regex matches, the job will be regarded as failure.
 
 # Install and run
 
