@@ -11,14 +11,14 @@ Currently supported traffic lights:
 
 This is an early version which might contain bugs. Please report any issues through GitHub; we are interested in 
 continuing development on this product and will respond ASAP. Please also contact us if you think the documentation 
-is insufficient or incomplete (see MAINTAINERS file for contact info).
+is insufficient or incomplete (see ```MAINTAINERS``` file for contact info).
 
 It is our goal to provide an easy to use out of the box experience. If you think that we missed this goal for some 
-reason, we'll be glad to receive your feedback (see MAINTAINERS file for contact info).
+reason, we'll be glad to receive your feedback (see ```MAINTAINERS``` file for contact info).
 
 ## Jobs
 
-The core concept of the build status monitor is a job, which represents an _artifact_ (job / project / etc.) that is 
+The core concept of the build status monitor is a _job_, which represents an _artifact_ (job / project / etc.) that is 
 build on a continuous integration server (CI). The daemon stores job information in JSON files in the ```data``` 
 sub-directory of the installation directory. A job may be successful (build was finished without error), unstable 
 (test assertion failed) or failed (build cancelled due to unrecoverable error). The status will be displayed on the 
@@ -28,9 +28,7 @@ traffic light with the following colors:
 - **Yellow:** at least one job's build was unstable (failing tests)
 - **Green:** all of the jobs built successfully
 
-The light will turn green if all jobs pass and red if at least one job fails. Jobs 
-are stored as JSON files in the data directory of your installation. You may backup these files and copy them to 
-another installation, e.g. on another machine. 
+Job files are not machine bound and may thus be copied to a backup or another installation, e.g. on a different machine.
 
 ## Jenkins job
 
