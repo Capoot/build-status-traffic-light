@@ -174,6 +174,32 @@ you will be asked if you want to import jobs from your old installation. The ins
 and set the software up to be started automatically at boot. It will create the init script ```/etc/init.d/tebs-daemon```
 which you can call with the arguments ```start```, ```stop``` or ```restart```.
 
+# Contributing
+
+To contribute, create a fork and pull request. Please note, that we value automated tests and would like to ask all 
+contributors to provide at least the most essential test cases for their changes. We also emphasise code quality and 
+would like to ask all contributors to commit only clean code, according to the Java Coding Conventions (see 
+http://www.oracle.com/technetwork/java/codeconvtoc-136057.html)
+
+Please contact someone listed in the ```MAINTAINERS``` file if you have a question regarding contribution. We will be 
+happy to get back at you ASAP.
+
+# Contributors
+
+Thanks to our contributors
+
+- Sanja Batkovic
+- Julian Heise
+
+# Next steps
+
+- Add support for Travis CI
+- Add support for Go CD
+
+# Contact
+
+Please find contact information in the ```MAINTAINERS``` file.
+
 # License
 
 The MIT License (MIT) Copyright © 2016 Zalando SE, https://tech.zalando.com
