@@ -8,7 +8,17 @@ fi
 NEW_PATH=$(dirname $0)
 NEW_PATH=$(cd $NEW_PATH && pwd )
 
-echo "This will uninstall all previous versions of the tebs-daemon and install the new version from $NEW_PATH instead."
+echo
+echo "Please note:"
+echo "This will install the Testing Excellence Build Status Traffic light version ${project.version} in $NEW_PATH. "\
+     "If you have an older version on this machine, all daemon entries in /etc/init.d will be automatically removed. "\
+     "The installation directory of the old version, however, will not be deleted by this process."
+echo
+echo "What it will do:"
+echo
+echo "  * Setup the script daemon.sh as /etc/init.d/tebs-daemon"
+echo "  * make an update-rc.d entry to autostart the daemon on boot"
+echo
 echo "Do you want to continue? (y/n)"
 
 read continueInstallation
@@ -18,17 +28,17 @@ then
     exit 0
 fi
 
-/etc/init.d/tebs-daemon stop
-
 if [ -e "/etc/init.d/tebs-daemon" ]
 then
+
+    /etc/init.d/tebs-daemon stop
 
     path=$(readlink -f /etc/init.d/tebs-daemon)
     path=$(dirname $path)
     path=$(cd $path && pwd)
 
-    echo "There is an old installation in $path"
-    echo "Do you want to import jobs and configuration from that installation? (y/n)"
+    echo "There is an old installation in $path. Do you want to import jobs and configuration from that installation? "\
+         "(y/n)"
 
     read importJobs
     if [ $importJobs == "y" ]

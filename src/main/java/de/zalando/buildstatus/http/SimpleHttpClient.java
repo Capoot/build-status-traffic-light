@@ -27,8 +27,7 @@ public class SimpleHttpClient {
     private HttpClient defaultClient;
     private HttpClient insecureSslClient;
 
-    public String sendGetWithBasicAuth(String url, String userName, String password,
-            boolean acceptInsecureSslCert) {
+    public String sendGetWithBasicAuth(String url, String userName, String password, boolean acceptInsecureSslCert) {
 
         HttpClient client;
         try {
@@ -38,14 +37,14 @@ public class SimpleHttpClient {
         }
 
         try {
-            return sendGetWithBasicAuth(url, userName, password, client);
+            return sendGetRequestAndExtractResponseAsString(url, userName, password, client);
         } catch (IOException e) {
             throw new RuntimeException("failed to send request to Jenkins API", e);
         }
     }
 
-    private String sendGetWithBasicAuth(String url, String userName, String password, HttpClient client)
-            throws IOException {
+    private String sendGetRequestAndExtractResponseAsString(String url, String userName, String password,
+            HttpClient client) throws IOException {
 
         HttpGet get = new HttpGet(url);
         addAuthHeader(userName, password, get);
