@@ -197,7 +197,7 @@ Thanks to the contributors
 
 ![master branch build status](https://travis-ci.org/zalando/build-status-traffic-light.svg?branch=master)
 
-We use [Travis CI](https://travis-ci.org/zalando/build-status-traffic-light/) to build this project All pull requests
+We use [Travis CI](https://travis-ci.org/zalando/build-status-traffic-light/) to build this project. All pull requests
 will be built automatically and can only be merged, if the build passes.
 
 # Next steps
