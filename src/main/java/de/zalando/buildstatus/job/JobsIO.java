@@ -51,8 +51,11 @@ public class JobsIO {
         if(GenericRestApiJob.TYPE.equalsIgnoreCase(type)) {
             return readGenericRestApiJob(json);
         }
+        if(TravisCiDotOrgJob.TYPE.equalsIgnoreCase(type)) {
+            return readTravisCiDotOrgJob(json);
+        }
 
-        throw new RuntimeException("unknown job type: [" + type);
+        throw new RuntimeException("unknown job type: [" + type + "]");
     }
 
     private static Job readJenkinsJob(String jobName, JSONObject json) {
@@ -72,6 +75,14 @@ public class JobsIO {
                 json.getString("successRegex"),
                 readOptionalJsonAttribute(json, "unstableRegex"),
                 json.getBoolean("acceptInsecureSslCert"));
+    }
+
+    private static Job readTravisCiDotOrgJob(JSONObject json) {
+        return new TravisCiDotOrgJob(
+                json.getString("job"),
+                json.getString("owner"),
+                json.getString("branch")
+        );
     }
 
     private static String readOptionalJsonAttribute(JSONObject json, String key) {

@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 public class TravisCiDotOrgJob implements Job {
 
+    public static final String TYPE = "travis-ci.org";
+
     private static final Pattern SUCCESSFULL_BUILD_PATTERN = Pattern.compile(".*passing.*");
 
     private final String url;
@@ -21,5 +23,9 @@ public class TravisCiDotOrgJob implements Job {
             return JobStatus.SUCCESS;
         }
         return JobStatus.FAILED;
+    }
+
+    String getUrl() {
+        return url;
     }
 }
