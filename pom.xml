@@ -30,7 +30,7 @@
                         <artifactId>maven-assembly-plugin</artifactId>
                         <configuration>
                             <descriptor>src/main/assembly/assembly.xml</descriptor>
-                            <finalName>te-buildstatus-${pom.version}</finalName>
+                            <finalName>te-buildstatus-${project.version}</finalName>
                         </configuration>
                         <executions>
                             <execution>

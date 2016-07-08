@@ -61,7 +61,7 @@ public class JobsIoTest {
     }
 
     @Test
-    public void testJenkinsJobsToo() throws Exception {
+    public void readJenkinsJobFromFile() throws Exception {
 
         copyFileFromClassPathToFileSystem("/jenkinsjob.json", tempDir.getRoot().getAbsolutePath() + "/jenkinsjob.json");
         Collection<Job> jobs = JobsIO.readJobs(tempDir.getRoot().getAbsolutePath());
@@ -98,5 +98,16 @@ public class JobsIoTest {
         assertEquals(1, jobs.size());
         GenericRestApiJob job = (GenericRestApiJob)jobs.iterator().next();
         assertNull(job.getUnstableRegex());
+    }
+
+    @Test
+    public void readTravisCiDotOrgJobFromFile() throws Exception {
+
+        copyFileFromClassPathToFileSystem("/travisjob.json", tempDir.getRoot().getAbsolutePath() + "/travisjob.json");
+        Collection<Job> jobs = JobsIO.readJobs(tempDir.getRoot().getAbsolutePath());
+
+        assertEquals(1, jobs.size());
+        TravisCiDotOrgJob job = (TravisCiDotOrgJob)jobs.iterator().next();
+        assertEquals("https://api.travis-ci.org/ownerName/jobName?branch=master", job.getUrl());
     }
 }
