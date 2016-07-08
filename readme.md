@@ -60,8 +60,8 @@ As a password you can also specify Jenkins API tokens
 ## Generic job
 
 There is a generic job format which can send a GET request to any URL and parse the result with a regex. To create 
-such a job, create a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses Java format,
-see: https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html
+such a job, create a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses 
+[Java format](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
 
 The job will use the provided credentials to perform basic auth via HTTP. You can also opt to not specify userName 
 and password in order to access an unprotected API.
@@ -89,11 +89,9 @@ This software controls the traffic light via USB and is a precondition. For the 
 and built via make. The following instructions work for Raspian. Please note: this software is build for Clewarecontrol
 version 4.1 and may or may not work with other versions.
 
-1. Either download from  
-   https://www.vanheusden.com/clewarecontrol/files/clewarecontrol-4.1.tgz
+1. Either [download the binaries](https://www.vanheusden.com/clewarecontrol/files/clewarecontrol-4.1.tgz)
    
-   or clone from GitHub repo (unfortunately, version 4.1 is not tagged)  
-   https://github.com/flok99/clewarecontrol
+   or clone from [GitHub repo](https://github.com/flok99/clewarecontrol) (unfortunately, version 4.1 is not tagged)  
 
 2. Install hidabpi library
 
@@ -153,8 +151,8 @@ ldconfig -p | grep libhidapi
 
 ## Install Build Status Daemon
 
-Obtain a release archive, either via download from releases in the GitHub repo:
-https://github.com/zalando/build-status-traffic-light/releases
+Obtain a release archive, either via download from 
+[releases](https://github.com/zalando/build-status-traffic-light/releases) in the GitHub repo:
 
 Or build it yourself with Maven:
 
@@ -180,8 +178,8 @@ which you can call with the arguments ```start```, ```stop``` or ```restart```.
 
 To contribute, create a fork and pull request. Please note, that we value automated tests and would like to ask all 
 contributors to provide at least the most essential test cases for their changes. We also emphasise code quality and 
-would like to ask all contributors to commit only clean code, according to the Java Coding Conventions (see 
-http://www.oracle.com/technetwork/java/codeconvtoc-136057.html)
+would like to ask all contributors to commit only clean code, according to the 
+[Java Coding Conventions](http://www.oracle.com/technetwork/java/codeconvtoc-136057.html).
 
 Please contact someone listed in the ```MAINTAINERS``` file if you have a question regarding contribution. We will be 
 happy to get back at you ASAP.
