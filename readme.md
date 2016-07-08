@@ -195,11 +195,10 @@ Thanks to the contributors
 
 ## Continuous Integration
 
-We use Travis CI to build this project ![master branch build status](https://travis-ci.org/zalando/build-status-traffic-light/)
+![master branch build status](https://travis-ci.org/zalando/build-status-traffic-light.svg?branch=master)
 
-https://travis-ci.org/zalando/build-status-traffic-light/
-
-All pull requests will be built automatically and can only be merged, if the build passes.
+We use [Travis CI](https://travis-ci.org/zalando/build-status-traffic-light/) to build this project All pull requests
+will be built automatically and can only be merged, if the build passes.
 
 # Next steps
 
