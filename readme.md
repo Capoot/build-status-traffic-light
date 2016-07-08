@@ -186,12 +186,19 @@ http://www.oracle.com/technetwork/java/codeconvtoc-136057.html)
 Please contact someone listed in the ```MAINTAINERS``` file if you have a question regarding contribution. We will be 
 happy to get back at you ASAP.
 
-# Contributors
+## Contributors
 
 Thanks to the contributors
 
 - Sanja Batkovic
 - Julian Heise
+
+## Continuous Integration
+
+![master branch build status](https://travis-ci.org/zalando/build-status-traffic-light.svg?branch=master)
+
+We use [Travis CI](https://travis-ci.org/zalando/build-status-traffic-light/) to build this project. All pull requests
+will be built automatically and can only be merged, if the build passes.
 
 # Next steps
 
