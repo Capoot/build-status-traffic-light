@@ -54,14 +54,8 @@ public class JenkinsJob implements Job {
         throw new IllegalStateException("Failed to retrieve job status from jenkins url = [" + url + "]");
     }
 
-    @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getPrintableDetails() {
-        return name + "\t(jenkins)\t" + url;
     }
 
     public String getUrl() {
