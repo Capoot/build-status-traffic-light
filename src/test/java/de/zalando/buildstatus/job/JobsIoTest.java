@@ -61,7 +61,7 @@ public class JobsIoTest {
     }
 
     @Test
-    public void testJenkinsJobsToo() throws Exception {
+    public void readJenkinsJobFromFile() throws Exception {
 
         copyFileFromClassPathToFileSystem("/jenkinsjob.json", tempDir.getRoot().getAbsolutePath() + "/jenkinsjob.json");
         Collection<Job> jobs = JobsIO.readJobs(tempDir.getRoot().getAbsolutePath());

@@ -47,16 +47,6 @@ public class GenericRestApiJob implements Job {
         return JobStatus.FAILED;
     }
 
-    @Override
-    public String getName() {
-        throw new RuntimeException("not implemented");
-    }
-
-    @Override
-    public String getPrintableDetails() {
-        throw new RuntimeException("not implemented");
-    }
-
     public String getUrl() {
         return url;
     }
