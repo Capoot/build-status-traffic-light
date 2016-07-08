@@ -57,6 +57,27 @@ The file should have the following content:
 
 As a password you can also specify Jenkins API tokens
 
+## travis-ci.org job
+
+A public [Travis CI .org](https://travis-ci.org/) job. Does not require credentials, since the info is publicly 
+available. This job does not support the unstable status (yellow light); it either fails or passes. Travis-ci.org 
+builds all branches of a project separately, so you have to specify which branch to query.
+
+The owner is the user or organization who owns the project. If you're not sure, check the URL of the build status. It
+should look similar to this one: https://travis-ci.org/zalando/build-status-traffic-light/pull_requests. The owner is
+the first part of the path which comes after travis-ci.org/. In case of the example it's "zalando".
+
+```
+{
+    "type" : "travis-ci.org",
+    "job" : "jobName",
+    "owner" : "ownerName",
+    "branch" : "master"
+}
+```
+
+This is a public job on 
+
 ## Generic job
 
 There is a generic job format which can send a GET request to any URL and parse the result with a regex. To create 
