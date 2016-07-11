@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -61,7 +62,7 @@ public class JobsIoTest {
     }
 
     @Test
-    public void testJenkinsJobsToo() throws Exception {
+    public void readJenkinsJobFromFile() throws Exception {
 
         copyFileFromClassPathToFileSystem("/jenkinsjob.json", tempDir.getRoot().getAbsolutePath() + "/jenkinsjob.json");
         Collection<Job> jobs = JobsIO.readJobs(tempDir.getRoot().getAbsolutePath());
@@ -98,5 +99,40 @@ public class JobsIoTest {
         assertEquals(1, jobs.size());
         GenericRestApiJob job = (GenericRestApiJob)jobs.iterator().next();
         assertNull(job.getUnstableRegex());
+    }
+
+    @Test
+    public void readTravisCiDotOrgJobFromFile() throws Exception {
+
+        copyFileFromClassPathToFileSystem("/travisjob.json", tempDir.getRoot().getAbsolutePath() + "/travisjob.json");
+        Collection<Job> jobs = JobsIO.readJobs(tempDir.getRoot().getAbsolutePath());
+
+        assertEquals(1, jobs.size());
+        TravisCiDotOrgJob job = (TravisCiDotOrgJob)jobs.iterator().next();
+        assertEquals("https://api.travis-ci.org/ownerName/jobName?branch=master", job.getUrl());
+    }
+
+    @Test
+    public void ifAcceptInsecureSslCertIsMissingInGenericJobItShouldBeSetToFalse() throws Exception {
+
+        copyFileFromClassPathToFileSystem("/genericJobSslCert.json", tempDir.getRoot().getAbsolutePath()
+                + "/genericJobSslCert.json");
+        Collection<Job> jobs = JobsIO.readJobs(tempDir.getRoot().getAbsolutePath());
+
+        assertEquals(1, jobs.size());
+        GenericRestApiJob job = (GenericRestApiJob)jobs.iterator().next();
+        assertFalse(job.isAcceptSelfSignedSslCert());
+    }
+
+    @Test
+    public void ifAcceptInsecureSslCertIsMissingInJenkinsJobItShouldBeSetToFalse() throws Exception {
+
+        copyFileFromClassPathToFileSystem("/jenkinsJobSslCert.json", tempDir.getRoot().getAbsolutePath()
+                + "/jenkinsJobSslCert.json");
+        Collection<Job> jobs = JobsIO.readJobs(tempDir.getRoot().getAbsolutePath());
+
+        assertEquals(1, jobs.size());
+        JenkinsJob job = (JenkinsJob)jobs.iterator().next();
+        assertFalse(job.isAcceptInsecureSslCert());
     }
 }

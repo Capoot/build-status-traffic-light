@@ -2,6 +2,7 @@
 
 TE_LIB_DIR="${TEBS_HOME}/lib"
 TE_BIN_DIR="${TEBS_HOME}/bin"
+TE_CONF_DIR="${TEBS_HOME}/conf"
 
 CLASS_PATH="$TE_LIB_DIR/*:$TE_BIN_DIR/${project.build.finalName}.jar"
 MAIN_CLASS="de.zalando.buildstatus.daemon.BuildStatusPoll"
@@ -15,6 +16,6 @@ fi
 while true
 do
     cd $TEBS_HOME
-    java -cp $CLASS_PATH $MAIN_CLASS "$TEBS_HOME/data" > /dev/null 2>&1
+    java -Dlog4j.configuration=file://${TE_CONF_DIR}/log4j.properties -cp $CLASS_PATH $MAIN_CLASS "$TEBS_HOME/data" 2>&1 > /dev/null
     sleep 30s
 done

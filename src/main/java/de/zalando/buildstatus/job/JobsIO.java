@@ -51,27 +51,56 @@ public class JobsIO {
         if(GenericRestApiJob.TYPE.equalsIgnoreCase(type)) {
             return readGenericRestApiJob(json);
         }
+        if(TravisCiDotOrgJob.TYPE.equalsIgnoreCase(type)) {
+            return readTravisCiDotOrgJob(json);
+        }
 
-        throw new RuntimeException("unknown job type: [" + type);
+        throw new RuntimeException("unknown job type: [" + type + "]");
     }
 
     private static Job readJenkinsJob(String jobName, JSONObject json) {
+
+        boolean acceptInsecureSslCert = false;
+
+        try {
+            acceptInsecureSslCert = json.getBoolean("acceptInsecureSslCert");
+        } catch(JSONException e) {
+            // ignored
+        }
+
         return new JenkinsJob(
                 json.getString("host"),
                 jobName,
                 readOptionalJsonAttribute(json, "userName"),
                 readOptionalJsonAttribute(json, "password"),
-                json.getBoolean("acceptInsecureSslCert"));
+                acceptInsecureSslCert);
     }
 
     private static Job readGenericRestApiJob(JSONObject json) {
+
+        boolean acceptInsecureSslCert = false;
+
+        try {
+            acceptInsecureSslCert = json.getBoolean("acceptInsecureSslCert");
+        } catch(JSONException e) {
+            // ignored
+        }
+
         return new GenericRestApiJob(
                 json.getString("url"),
                 readOptionalJsonAttribute(json, "userName"),
                 readOptionalJsonAttribute(json, "password"),
                 json.getString("successRegex"),
                 readOptionalJsonAttribute(json, "unstableRegex"),
-                json.getBoolean("acceptInsecureSslCert"));
+                acceptInsecureSslCert);
+    }
+
+    private static Job readTravisCiDotOrgJob(JSONObject json) {
+        return new TravisCiDotOrgJob(
+                json.getString("job"),
+                json.getString("owner"),
+                json.getString("branch")
+        );
     }
 
     private static String readOptionalJsonAttribute(JSONObject json, String key) {

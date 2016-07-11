@@ -1,0 +1,6 @@
+{
+  "type" : "travis-ci.org",
+  "job" : "jobName",
+  "owner" : "ownerName",
+  "branch" : "master"
+}
