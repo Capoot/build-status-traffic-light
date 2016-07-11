@@ -59,22 +59,40 @@ public class JobsIO {
     }
 
     private static Job readJenkinsJob(String jobName, JSONObject json) {
+
+        boolean acceptInsecureSslCert = false;
+
+        try {
+            acceptInsecureSslCert = json.getBoolean("acceptInsecureSslCert");
+        } catch(JSONException e) {
+            // ignored
+        }
+
         return new JenkinsJob(
                 json.getString("host"),
                 jobName,
                 readOptionalJsonAttribute(json, "userName"),
                 readOptionalJsonAttribute(json, "password"),
-                json.getBoolean("acceptInsecureSslCert"));
+                acceptInsecureSslCert);
     }
 
     private static Job readGenericRestApiJob(JSONObject json) {
+
+        boolean acceptInsecureSslCert = false;
+
+        try {
+            acceptInsecureSslCert = json.getBoolean("acceptInsecureSslCert");
+        } catch(JSONException e) {
+            // ignored
+        }
+
         return new GenericRestApiJob(
                 json.getString("url"),
                 readOptionalJsonAttribute(json, "userName"),
                 readOptionalJsonAttribute(json, "password"),
                 json.getString("successRegex"),
                 readOptionalJsonAttribute(json, "unstableRegex"),
-                json.getBoolean("acceptInsecureSslCert"));
+                acceptInsecureSslCert);
     }
 
     private static Job readTravisCiDotOrgJob(JSONObject json) {
