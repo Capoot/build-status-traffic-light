@@ -61,6 +61,22 @@ then
     fi
 fi
 
+echo "creating logging conf in ${NEW_PATH}/conf..."
+
+mkdir ${NEW_PATH}/log
+mkdir ${NEW_PATH}/conf
+
+LOG_FILE=${NEW_PATH}/conf/log4j.properties
+touch $LOG_FILE
+
+echo "log4j.rootLogger=INFO, file" >> $LOG_FILE
+echo "log4j.appender.file=org.apache.log4j.RollingFileAppender" >> $LOG_FILE
+echo "log4j.appender.file.File=${NEW_PATH}/log/tebs.log" >> $LOG_FILE
+echo "log4j.appender.file.MaxFileSize=2MB" >> $LOG_FILE
+echo "log4j.appender.file.MaxBackupIndex=5" >> $LOG_FILE
+echo "log4j.appender.file.layout=org.apache.log4j.PatternLayout" >> $LOG_FILE
+echo "log4j.appender.file.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n" >> $LOG_FILE
+
 echo "Updating daemon link /etc/init.d/tebs-daemon to point to ${NEW_PATH}/daemon.sh"
 
 rm /etc/init.d/tebs-daemon

@@ -16,6 +16,6 @@ fi
 while true
 do
     cd $TEBS_HOME
-    java -Dlog4j.configuration=${TE_CONF_DIR}/log4j.properties -cp $CLASS_PATH $MAIN_CLASS "$TEBS_HOME/data" 2>&1 > /dev/null
+    java -Dlog4j.configuration=file://${TE_CONF_DIR}/log4j.properties -cp $CLASS_PATH $MAIN_CLASS "$TEBS_HOME/data" 2>&1 > /dev/null
     sleep 30s
 done
