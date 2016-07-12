@@ -173,7 +173,7 @@ ldconfig -p | grep libhidapi
 ## Install Build Status Daemon
 
 Obtain a release archive, either via download from 
-[releases](https://github.com/zalando/build-status-traffic-light/releases) in the GitHub repo:
+[releases](https://github.com/zalando/build-status-traffic-light/releases) in the GitHub repo
 
 Or build it yourself with Maven:
 
@@ -221,7 +221,6 @@ will be built automatically and can only be merged, if the build passes.
 
 # Next steps
 
-- Add support for Travis CI
 - Add support for Go CD
 
 # Contact
