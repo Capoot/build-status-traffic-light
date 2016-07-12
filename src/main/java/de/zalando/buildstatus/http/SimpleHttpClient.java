@@ -39,7 +39,7 @@ public class SimpleHttpClient {
         try {
             return sendGetRequestAndExtractResponseAsString(url, userName, password, client);
         } catch (IOException e) {
-            throw new RuntimeException("failed to send request to Jenkins API", e);
+            throw new RuntimeException("failed to send http request to [" + url + "]", e);
         }
     }
 

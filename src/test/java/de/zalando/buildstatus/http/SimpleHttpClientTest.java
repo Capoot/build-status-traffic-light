@@ -15,7 +15,7 @@ public class SimpleHttpClientTest {
     private ClientAndServer mockServer;
     private final int port = 8081;
     private final String path = "/test";
-    private final String url = "http://localhost:" + port + "" + path;
+    private final String url = "http://localhost:" + port + path;
 
     @Before
     public void setup() {
@@ -46,7 +46,6 @@ public class SimpleHttpClientTest {
     public void ifAuthInfoIsNotSpecifiedAuthHeaderShouldNotBeAddedToRequest() {
 
         final String expectedResponse = "hello world";
-        final String path = "/test";
 
         mockServer.when(
                 request().withPath(path)).respond(
@@ -57,5 +56,39 @@ public class SimpleHttpClientTest {
         HttpRequest[] actualRequests = mockServer.retrieveRecordedRequests(request().withPath(path));
         assertEquals(1, actualRequests.length);
         assertEquals("", actualRequests[0].getFirstHeader("Authorization"));
+    }
+
+    @Test
+    public void ifStatusCodeIs301RedirectShouldBePerformed() {
+        testRedirectWithStatusCode(301);
+    }
+
+    private void testRedirectWithStatusCode(int statusCode) {
+        String initialPath = "/test";
+        String requestUrl = "http://localhost:" + port + initialPath;
+        String redirectedPath = "/redirect-target";
+        String redirectTargetUrl = "http://localhost:" + port + redirectedPath;
+
+        mockServer.when(
+                request().withPath(initialPath)).respond(
+                response().withStatusCode(statusCode).withHeader("Location", redirectTargetUrl));
+
+        mockServer.when(
+                request().withPath(redirectedPath)).respond(
+                response().withStatusCode(200));
+
+        new SimpleHttpClient().sendGetWithBasicAuth(requestUrl, null, null, false);
+
+        mockServer.verify(request().withPath(redirectedPath));
+    }
+
+    @Test
+    public void ifStatusCodeIs303RedirectShouldBePerformed() {
+        testRedirectWithStatusCode(303);
+    }
+
+    @Test
+    public void ifStatusCodeIs307RedirectShouldBePerformed() {
+        testRedirectWithStatusCode(307);
     }
 }
