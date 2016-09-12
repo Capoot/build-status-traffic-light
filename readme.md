@@ -1,49 +1,34 @@
 # Build Status Traffic Light
 
-This software allows a number of CI Jobs (e.g. Jenkins) to be monitored and reported corresponding to the job's status 
-by switching the color of a USB mini traffic light. The package comes with a Debian daemon and an automated 
-out-of-the-box-installer for Debian based Linux systems. In order to run, the Clewarecontrol software must be built and
-installed manually (see sect. [Install Clewarecontrol Software](https://github.com/zalando/build-status-traffic-light#install-clewarecontrol-software)).
+**Build Status Traffic Light** is a Linux daemon that enables you to monitor and report multiple continuous integration jobs from Jenkins, Travis CI, or generically, simply by switching the color of a USB mini traffic light to correspond to the job's status. It comes with a Debian daemon and an automated out-of-the-box-installer for Debian-based Linux systems. 
 
-Currently supported traffic lights:
- 
- - [Cleware USB-MiniTrafficLight]
+To run Build Status Traffic Light, you must manually build and [install Clewarecontrol Software](https://github.com/zalando/build-status-traffic-light#install-clewarecontrol-software). You also need a traffic light; this project currently supports the [Cleware USB-MiniTrafficLight]
  (http://www.cleware-shop.de/epages/63698188.sf/en_US/?ViewObjectPath=%2FShops%2F63698188%2FProducts%2F41%2FSubProducts%2F41-1
- "View product information in the Cleware shop")
+ "View product information in the Cleware shop").
 
-This is an early version which might contain bugs. Please report any issues through GitHub; we are interested in 
-continuing development on this product and will respond ASAP. Please also contact us if you think the documentation 
-is insufficient or incomplete (see ```MAINTAINERS``` file for contact info).
-
-It is our goal to provide an easy to use out of the box experience. If you think that we missed this goal for some 
-reason, we'll be glad to receive your feedback (see ```MAINTAINERS``` file for contact info).
+## Development Status
+This version, released in July 2016, is early-stage and therefore might contain bugs, offer insufficient/incomplete documentation, or miss the mark in providing you with a great user experience. Please report any issues via [GitHub issues](https://github.com/zalando/build-status-traffic-light/issues), or by emailing the [maintainers](https://github.com/zalando/build-status-traffic-light/blob/master/MAINTAINERS). Development is in progress, and we will respond ASAP. 
 
 ## Jobs
 
-The core concept of the build status monitor is a _job_, which represents an _artifact_ (job / project / etc.) that is 
-build on a continuous integration server (CI). The daemon stores job information in JSON files in the ```data``` 
-sub-directory of the installation directory. A job may be successful (build was finished without error), unstable 
-(test assertion failed) or failed (build cancelled due to unrecoverable error). The status will be displayed on the 
-traffic light with the following colors:
+The core concept of the build status monitor is a _job_, which represents an _artifact_ (job, project, etc.) built on a CI server. The daemon stores job information in JSON files in the ```data``` sub-directory of the installation directory. A job may be successful (green), unstable (yellow) or failed (red). The traffic light will display the status with the following colors:
 
-- **Red:** at least one job failed to build
-- **Yellow:** at least one job's build was unstable (failing tests)
+- **Red:** build cancelled due to unrecoverable error affecting at least one job
+- **Yellow:** at least one job's build was unstable; test assertion failed
 - **Green:** all of the jobs built successfully
 
-Job files are not machine bound and may thus be copied to a backup or another installation, e.g. on a different machine.
+Job files are not machine-bound, so you can copy them to a backup or another installation, e.g. on a different machine.
 
-## Jenkins job
+## Jenkins Job
 
-The Jenkins Job info will go in the ```$TEBS_HOME/data``` dir (create if not present). Create a file and name it the
-same as the corresponding job in Jenkins, and attach the file ending ```.json``` (every job will be configured in 
-it's own file).
+Jenkins Job info goes into the ```$TEBS_HOME/data``` directory (if it's not already present, you can create it). Create a file and give it the same name as the corresponding Jenkins job. Then attach the file ending with ```.json``` (every job will be configured in its own file).
  
 Example:
 
 Jenkins job name: build-status-traffic-light
 File name: build-status-traffic-light.json
 
-The file should have the following content:
+The file should include the following content:
 
 ```
 {
@@ -55,17 +40,15 @@ The file should have the following content:
 }
 ```
 
-As a password you can also specify Jenkins API tokens
+For a password, you can also specify Jenkins API tokens.
 
-## travis-ci.org job
+## Travis CI Jobs
 
-A public [Travis CI .org](https://travis-ci.org/) job. Does not require credentials, since the info is publicly 
-available. This job does not support the unstable status (yellow light); it either fails or passes. Travis-ci.org 
-builds all branches of a project separately, so you have to specify which branch to query.
+With [Travis CI](https://travis-ci.org/), Build Status Traffic Light doesn't report the "unstable" status (yellow light); jobs either pass or fail. Travis builds all branches of a project separately, so you must specify which branch to query. A public Travis job does not require credentials, because the info is publicly available.  
 
 The owner is the user or organization who owns the project. If you're not sure, check the URL of the build status. It
-should look similar to this one: https://travis-ci.org/zalando/build-status-traffic-light/pull_requests. The owner is
-the first part of the path which comes after travis-ci.org/. In case of the example it's "zalando".
+should look similar to [this one](https://travis-ci.org/zalando/build-status-traffic-light/pull_requests). The owner is
+the first part of the path that comes after `travis-ci.org/`; in the example offered, it's "zalando".
 
 ```
 {
@@ -76,16 +59,12 @@ the first part of the path which comes after travis-ci.org/. In case of the exam
 }
 ```
 
-This is a public job on 
+## Generic Jobs
 
-## Generic job
-
-There is a generic job format which can send a GET request to any URL and parse the result with a regex. To create 
-such a job, create a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses 
+Build Status Traffic Light's generic job format sends a GET request to any URL and parses the result with a regex. To create such a job, make a corresponding JSON file in the data dir, e.g. ```data/myjob.json```. The regex uses 
 [Java format](https://docs.oracle.com/javase/8/docs/api/java/util/regex/Pattern.html).
 
-The job will use the provided credentials to perform basic auth via HTTP. You can also opt to not specify userName 
-and password in order to access an unprotected API.
+The job will use the provided credentials to perform basic auth via HTTP. To access an unprotected API, simply skip specifying a userName and password.
 
 ```
 {
@@ -99,28 +78,23 @@ and password in order to access an unprotected API.
 }
 ```
 
-When executed, the job will first try to match the response with the success regex and only if there is no match, it 
-will try to match with the unstable regex. If none of the supplied regex matches, the job will be regarded as failure.
+When executed, the job will first try to match the response with the successful regex. If this fails, it will then try to match with the unstable regex. If none of the supplied regex matches, the job status will be "failure."
 
-# Install and run
+# Install and Run
 
 ## Install Clewarecontrol Software
 
-This software controls the traffic light via USB and is a precondition. For the installation it has to be downloaded 
-and built via make. The following instructions work for Raspian. Please note: this software is build for Clewarecontrol
-version 4.1 and may or may not work with other versions.
+This software controls the traffic light via USB and is required. To install, you must download and build it manually. The following instructions work for Raspian. Please note: this project is built for Clewarecontrol v.4.1 and might not support other versions.
 
-1. Either [download the binaries](https://www.vanheusden.com/clewarecontrol/files/clewarecontrol-4.1.tgz)
-   
-   or clone from [GitHub repo](https://github.com/flok99/clewarecontrol) (unfortunately, version 4.1 is not tagged)  
+1. Either [download the binaries](https://www.vanheusden.com/clewarecontrol/files/clewarecontrol-4.1.tgz), or clone from [this GitHub repo](https://github.com/flok99/clewarecontrol) (unfortunately, version 4.1 is not tagged)  
 
-2. Install hidabpi library
+2. Install the hidabpi library
 
 ```
 sudo apt-get install libhidapi-dev
 ```
 
-3. Create file ```/usr/share/pkgconfig/hidapi.pc```
+3. Create the file ```/usr/share/pkgconfig/hidapi.pc```
 
 ```
 prefix=/usr 
@@ -152,19 +126,19 @@ ld -llibhidapi-libusb --verbose
 ld -llibhidapi-hidraw --verbose
 ```
 
-7. navigate to clewarecontrol-4.1 folder and run:
+7. Navigate to clewarecontrol-4.1 folder and run:
 
 ```
 make install
 ```
 
-8. Test installation, run:
+8. Test your installation by running:
 
 ```
 clewarecontrol -l
 ```
 
-Note: on a system different from Raspian you might have to locate the libraries first. Do it using:
+Note: on a non-Raspian system, you might have to locate the libraries first. Do it using:
 
 ```
 ldconfig -p | grep libhidapi
@@ -172,61 +146,44 @@ ldconfig -p | grep libhidapi
 
 ## Install Build Status Daemon
 
-Obtain a release archive, either via download from 
-[releases](https://github.com/zalando/build-status-traffic-light/releases) in the GitHub repo:
-
-Or build it yourself with Maven:
+Obtain a release archive either by downloading it from [our releases](https://github.com/zalando/build-status-traffic-light/releases) or by building it yourself with Maven:
 
 ```
 git clone git@github.com:zalando/build-status-traffic-light.git
 mvn package -P release
 ```
 
-Either way you will have a .tar.gz archive which contains everything you need to install and run the traffic light 
-software. To extract the archive to your desired location, type
+Either way, you will have a .tar.gz archive containing everything you need for installing and running the traffic light 
+software. To extract the archive to your desired location, type:
 
 ```
 tar xfz te-buildstatus-1.0.0.tar.gz -C /my/desired/installation/directory
 cd /my/desired/installation/directory
 ```
 
-Now run ```install.sh``` and follow the instructions on the screen. If you have an old installation on your machine 
-you will be asked if you want to import jobs from your old installation. The installer will start the traffic light 
-and set the software up to be started automatically at boot. It will create the init script ```/etc/init.d/tebs-daemon```
+Now run ```install.sh``` and follow the instructions on the screen. If you have an old installation, your machine will ask if you want to import jobs from your old installation. The installer will start the traffic light 
+and set up the software to start automatically upon boot. It will create the init script ```/etc/init.d/tebs-daemon```,
 which you can call with the arguments ```start```, ```stop``` or ```restart```.
 
 # Contributing
 
-To contribute, create a fork and pull request. Please note, that we value automated tests and would like to ask all 
-contributors to provide at least the most essential test cases for their changes. We also emphasise code quality and 
-would like to ask all contributors to commit only clean code, according to the 
-[Java Coding Conventions](http://www.oracle.com/technetwork/java/codeconvtoc-136057.html).
+To contribute, create a fork and pull request. We value automated tests and request that you provide at least the most essential test cases for your changes. We also emphasise code quality, so please commit only clean code that follows  [Java Coding Conventions](http://www.oracle.com/technetwork/java/codeconvtoc-136057.html).
 
-Please contact someone listed in the ```MAINTAINERS``` file if you have a question regarding contribution. We will be 
-happy to get back at you ASAP.
+# Contact
 
-## Contributors
-
-Thanks to the contributors
-
-- Sanja Batkovic
-- Julian Heise
+If you have a question about contributing, please contact someone listed in the [maintainers file](https://github.com/zalando/build-status-traffic-light/blob/master/MAINTAINERS).
 
 ## Continuous Integration
 
 ![master branch build status](https://travis-ci.org/zalando/build-status-traffic-light.svg?branch=master)
 
-[Travis CI](https://travis-ci.org/zalando/build-status-traffic-light/) is used to build this project. All pull requests
-will be built automatically and can only be merged, if the build passes.
+We used [Travis CI](https://travis-ci.org/zalando/build-status-traffic-light/) to build this project. All pull requests
+will be built automatically and can only be merged if the build passes.
 
 # Next steps
 
 - Add support for Travis CI
 - Add support for Go CD
-
-# Contact
-
-Please find contact information in the ```MAINTAINERS``` file.
 
 # License
 
