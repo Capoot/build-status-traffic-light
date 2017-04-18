@@ -16,6 +16,7 @@ import org.mockserver.integration.ClientAndServer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockserver.model.HttpRequest.request;
@@ -96,6 +97,13 @@ public class BuildStatusMonitorTest {
     public void ifJenkinsJobIsYellowIndicatorShouldDisplayUnstable() throws Exception {
         monitor.updateDisplay(createJobsListFromJson(jenkinsJobYellowJson));
         Mockito.verify(display, Mockito.times(1)).displayUnstable();
+        Mockito.verifyNoMoreInteractions(display);
+    }
+
+    @Test
+    public void ifNoJobConfiguredShouldDisplayFailure() throws Exception {
+        monitor.updateDisplay(Collections.emptyList());
+        Mockito.verify(display, Mockito.times(1)).displayFailure();
         Mockito.verifyNoMoreInteractions(display);
     }
 

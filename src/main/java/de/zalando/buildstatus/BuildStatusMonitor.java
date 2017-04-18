@@ -4,11 +4,14 @@ import de.zalando.buildstatus.display.Display;
 import de.zalando.buildstatus.http.SimpleHttpClient;
 import de.zalando.buildstatus.job.Job;
 import de.zalando.buildstatus.job.JobStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
 public class BuildStatusMonitor {
 
+    private static final Logger logger = LoggerFactory.getLogger(BuildStatusMonitor.class);
     private final Display indicator;
     private final SimpleHttpClient httpClient;
     private JobStatus displayStatus;
@@ -19,11 +22,15 @@ public class BuildStatusMonitor {
     }
 
     public void updateDisplay(Collection<Job> jobs) {
-
-        clearDisplayStatus();
-        for (Job job : jobs) {
-            JobStatus status = job.queryStatus(httpClient);
-            setDisplayStatus(status);
+        if(jobs == null || jobs.isEmpty()) {
+            logger.warn("No jobs configured");
+            setDisplayStatus(JobStatus.NO_JOBS_CONFIGURED);
+        } else {
+            clearDisplayStatus();
+            for (Job job : jobs) {
+                JobStatus status = job.queryStatus(httpClient);
+                setDisplayStatus(status);
+            }
         }
         switch(displayStatus) {
             case FAILED:
@@ -43,11 +50,15 @@ public class BuildStatusMonitor {
                 break;
             case SUCCESS_ANIMATION:
                 indicator.displaySuccess();
+                break;
+            case NO_JOBS_CONFIGURED:
+                indicator.displayFailure();
+                break;
         }
     }
 
     private void clearDisplayStatus() {
-        displayStatus = null;
+        displayStatus = JobStatus.NO_JOBS_CONFIGURED;
     }
 
     private void setDisplayStatus(JobStatus displayStatus) {
